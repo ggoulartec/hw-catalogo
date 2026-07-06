@@ -386,3 +386,9 @@ button:disabled {
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 435px) {
+    .spec-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
