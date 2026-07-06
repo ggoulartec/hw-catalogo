@@ -419,6 +419,40 @@ button:disabled {
   color: var(--muted);
 }
 
+/* Selection Summary */
+.selection-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border);
+  margin-top: 4px;
+}
+
+.selection-summary .summary-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.selection-summary .summary-item span {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.selection-summary .summary-item strong {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.selection-summary .summary-item .total-price {
+  color: #ffd1a6;
+  font-size: 1.15rem;
+}
+
 @media (max-width: 700px) {
   .hero,
   .catalog-header {

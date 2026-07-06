@@ -30,6 +30,7 @@
           </label>
 
           <div id="selectedCarsList" class="selected-cars-list"></div>
+          <div id="selectionSummary" class="selection-summary" style="display: none;"></div>
 
           <div class="action-buttons">
             <button id="whatsappBtn" class="primary-btn" disabled>Enviar pelo WhatsApp</button>
@@ -51,6 +52,7 @@
     const catalog = document.getElementById('catalog');
     const carSelect = document.getElementById('carSelect');
     const selectedCarsList = document.getElementById('selectedCarsList');
+    const selectionSummary = document.getElementById('selectionSummary');
     const whatsappBtn = document.getElementById('whatsappBtn');
     const downloadBtn = document.getElementById('downloadBtn');
     const selectAllBtn = document.getElementById('selectAll');
@@ -123,7 +125,7 @@
 
       const rows = selectedCars.map((car) => [
         car.name,
-        formatPrice(car.price),
+        car.price, // Export raw numeric price for calculation
         car.release_year,
         car.segment,
         car.assortment,
@@ -204,18 +206,27 @@
           const cellRef = XLSX.utils.encode_cell({ r: rowIndex + 1, c: colIndex });
           if (worksheet[cellRef]) {
             worksheet[cellRef].s = dataStyle;
+            if (colIndex === 1) { // Format price cells as currency in Excel
+              worksheet[cellRef].z = 'R$ #,##0.00';
+            }
           }
         });
       });
 
-      const totalQty = rows.length;
-      const totalPrice = rows.reduce((sum, row) => sum + (typeof row[1] === 'number' ? row[1] : 0), 0);
+      const totalQty = selectedCars.length;
+      const totalPrice = selectedCars.reduce((sum, car) => sum + (Number(car.price) || 0), 0);
       const totalCell = XLSX.utils.encode_cell({ r: rows.length + 2, c: 0 });
       const priceTotalCell = XLSX.utils.encode_cell({ r: rows.length + 2, c: 1 });
       const qtyCell = XLSX.utils.encode_cell({ r: rows.length + 2, c: 11 });
       const noteCell = XLSX.utils.encode_cell({ r: rows.length + 2, c: 12 });
       worksheet[totalCell] = { t: 's', v: 'Quantidade total de miniaturas' };
-      worksheet[priceTotalCell] = { t: 'n', v: totalPrice, z: 'R$ #,##0.00' };
+      // Assign formula and calculated value for spreadsheet total price
+      worksheet[priceTotalCell] = {
+        t: 'n',
+        f: `SUM(B2:B${rows.length + 1})`,
+        v: totalPrice,
+        z: 'R$ #,##0.00'
+      };
       worksheet[qtyCell] = { t: 'n', v: totalQty };
       worksheet[noteCell] = { t: 's', v: 'Seleção premium' };
       worksheet[totalCell].s = summaryStyle;
@@ -231,6 +242,7 @@
     const renderSelectedCars = () => {
       if (!selectedCars.length) {
         selectedCarsList.innerHTML = '<p class="empty-selection">Nenhum modelo selecionado ainda.</p>';
+        selectionSummary.style.display = 'none';
         whatsappBtn.disabled = true;
         downloadBtn.disabled = true;
         return;
@@ -242,6 +254,21 @@
           <small>${formatPrice(car.price)}</small>
         </div>
       `).join('');
+
+      const totalQty = selectedCars.length;
+      const totalPrice = selectedCars.reduce((sum, car) => sum + (Number(car.price) || 0), 0);
+
+      selectionSummary.innerHTML = `
+        <div class="summary-item">
+          <span>Total de itens:</span>
+          <strong>${totalQty} ${totalQty === 1 ? 'miniatura' : 'miniaturas'}</strong>
+        </div>
+        <div class="summary-item">
+          <span>Valor total:</span>
+          <strong class="total-price">${formatPrice(totalPrice)}</strong>
+        </div>
+      `;
+      selectionSummary.style.display = 'flex';
 
       whatsappBtn.disabled = false;
       downloadBtn.disabled = false;
