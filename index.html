@@ -39,6 +39,21 @@
         </div>
       </section>
 
+      <section class="filter-section">
+        <div class="filter-container">
+          <label for="searchInput" class="filter-label">
+            <span>🔍 Buscar por nome</span>
+          </label>
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Digite o nome do Hot Wheels..." 
+            class="search-input"
+          />
+          <button id="clearFilter" class="filter-clear-btn" style="display: none;">Limpar busca</button>
+        </div>
+      </section>
+
       <section class="cards-grid" id="catalog"></section>
       <div id="pagination" class="pagination-container"></div>
     </main>
@@ -46,10 +61,14 @@
 
   <script>
     let cars = [];
+    let filteredCars = [];
     let currentPage = 1;
     const itemsPerPage = 12;
+    let searchFilter = '';
 
     const catalog = document.getElementById('catalog');
+    const searchInput = document.getElementById('searchInput');
+    const clearFilterBtn = document.getElementById('clearFilter');
     const carSelect = document.getElementById('carSelect');
     const selectedCarsList = document.getElementById('selectedCarsList');
     const selectionSummary = document.getElementById('selectionSummary');
@@ -419,9 +438,8 @@
       catalog.innerHTML = '';
 
       const startIndex = (currentPage - 1) * itemsPerPage;
-      const endIndex = Math.min(startIndex + itemsPerPage, cars.length);
-      const pageCars = cars.slice(startIndex, endIndex);
-
+      const endIndex = Math.min(startIndex + itemsPerPage, filteredCars.length);
+      const pageCars = filteredCars.slice(startIndex, endIndex);
       pageCars.forEach((car) => {
         const card = document.createElement('article');
         card.className = 'car-card';
@@ -463,9 +481,36 @@
         catalog.appendChild(card);
       });
 
-      const totalPages = Math.ceil(cars.length / itemsPerPage);
+      const totalPages = Math.ceil(filteredCars.length / itemsPerPage);
       renderPagination(totalPages);
     };
+
+    const applyFilter = (searchTerm) => {
+      searchFilter = searchTerm.toLowerCase().trim();
+      if (searchFilter) {
+        filteredCars = cars.filter((car) =>
+          car.name.toLowerCase().includes(searchFilter)
+        );
+        clearFilterBtn.style.display = 'inline-block';
+      } else {
+        filteredCars = [...cars];
+        clearFilterBtn.style.display = 'none';
+      }
+      currentPage = 1;
+      renderPage(currentPage);
+      updateCardSelectionState();
+    };
+
+    searchInput.addEventListener('input', (event) => {
+      applyFilter(event.target.value);
+    });
+
+    clearFilterBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      applyFilter('');
+      searchInput.focus();
+    });
+
 
     const toggleSelection = (car) => {
       const exists = selectedCars.some((item) => item.name === car.name);
@@ -546,6 +591,7 @@
           throw new Error('Falha ao carregar o arquivo JSON.');
         }
         cars = await response.json();
+        filteredCars = [...cars];
         
         populateDropdown();
         renderPage(1);
