@@ -366,6 +366,52 @@
         }
       });
       pagination.appendChild(nextBtn);
+
+      // Ir para a página desejada
+      const jumpContainer = document.createElement('div');
+      jumpContainer.className = 'pagination-jump';
+
+      const jumpTextStart = document.createElement('span');
+      jumpTextStart.textContent = 'Ir para:';
+      jumpContainer.appendChild(jumpTextStart);
+
+      const jumpInput = document.createElement('input');
+      jumpInput.type = 'number';
+      jumpInput.className = 'pagination-input';
+      jumpInput.min = 1;
+      jumpInput.max = totalPages;
+      jumpInput.value = currentPage;
+
+      const goToPage = () => {
+        let pageVal = parseInt(jumpInput.value, 10);
+        if (isNaN(pageVal)) return;
+        if (pageVal < 1) pageVal = 1;
+        if (pageVal > totalPages) pageVal = totalPages;
+
+        currentPage = pageVal;
+        renderPage(currentPage);
+        updateCardSelectionState();
+        window.scrollTo({ top: catalog.offsetTop - 100, behavior: 'smooth' });
+      };
+
+      jumpInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          goToPage();
+        }
+      });
+      jumpContainer.appendChild(jumpInput);
+
+      const jumpTextEnd = document.createElement('span');
+      jumpTextEnd.textContent = `de ${totalPages}`;
+      jumpContainer.appendChild(jumpTextEnd);
+
+      const jumpBtn = document.createElement('button');
+      jumpBtn.className = 'pagination-btn pagination-go-btn';
+      jumpBtn.textContent = 'Ir';
+      jumpBtn.addEventListener('click', goToPage);
+      jumpContainer.appendChild(jumpBtn);
+
+      pagination.appendChild(jumpContainer);
     };
 
     const renderPage = (pageNumber) => {
