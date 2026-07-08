@@ -81,7 +81,7 @@
   },
   {
     "name": "Porsche Taycan Turbo S",
-    "price": 10,
+    "price": 15,
     "image": "img/img (151).JPEG",
     "release_year": "2026",
     "segment": "Hot Wheels",
@@ -113,7 +113,7 @@
   },
   {
     "name": "Porsche 904 Carrera GTS",
-    "price": 10,
+    "price": 15,
     "image": "img/img (154).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -193,7 +193,7 @@
   },
   {
     "name": "'91 GMC Syclone",
-    "price": 10,
+    "price": 15,
     "image": "img/img (6).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -209,7 +209,7 @@
   },
   {
     "name": "Custom ' 72 Chevy Luv",
-    "price": 10,
+    "price": 15,
     "image": "img/img (7).JPEG",
     "release_year": "2024",
     "segment": "Hot Wheels",
@@ -241,7 +241,7 @@
   },
   {
     "name": "'40 Ford Pickup",
-    "price": 5,
+    "price": 10,
     "image": "img/img (10).JPEG",
     "release_year": "2006",
     "segment": "Hot Wheels",
@@ -257,7 +257,7 @@
   },
   {
     "name": "Custom Cougar",
-    "price": 5,
+    "price": 10,
     "image": "img/img (12).JPEG",
     "release_year": "2005",
     "segment": "Archives",
@@ -273,7 +273,7 @@
   },
   {
     "name": "Silverado EV RST",
-    "price": 10,
+    "price": 15,
     "image": "img/img (13).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -305,7 +305,7 @@
   },
   {
     "name": "AMG-Mercedes CLK DTM",
-    "price": 5,
+    "price": 10,
     "image": "img/img (16).JPEG",
     "release_year": "2006",
     "segment": "Hot Wheels",
@@ -321,7 +321,7 @@
   },
   {
     "name": "Dodge Viper GTS-R",
-    "price": 5,
+    "price": 10,
     "image": "img/img (17).JPEG",
     "release_year": "2006",
     "segment": "Hot Wheels",
@@ -337,7 +337,7 @@
   },
   {
     "name": "Peugeot 9x8 Hypercar",
-    "price": 10,
+    "price": 15,
     "image": "img/img (18).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -369,7 +369,7 @@
   },
   {
     "name": "'69 El Camino",
-    "price": 5,
+    "price": 10,
     "image": "img/img (20).JPEG",
     "release_year": "2005",
     "segment": "Hot Wheels",
@@ -401,7 +401,7 @@
   },
   {
     "name": "'66 Chevy Nova",
-    "price": 5,
+    "price": 10,
     "image": "img/img (22).JPEG",
     "release_year": "2007",
     "segment": "Hot Wheels",
@@ -416,8 +416,8 @@
     "observation": "Possui detalhes de desgaste"
   },
   {
-    "name": "AromoRed Truck",
-    "price": 10,
+    "name": "Armored Truck",
+    "price": 15,
     "image": "img/img (23).JPEG",
     "release_year": "2014",
     "segment": "Hot Wheels",
@@ -433,7 +433,7 @@
   },
   {
     "name": "'74 Brazilian Dodge Charger",
-    "price": 10,
+    "price": 15,
     "image": "img/img (25).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -449,7 +449,7 @@
   },
   {
     "name": "BMW 635 CSI",
-    "price": 10,
+    "price": 15,
     "image": "img/img (26).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -465,7 +465,7 @@
   },
   {
     "name": "2018 Bentley Continental GT3",
-    "price": 10,
+    "price": 15,
     "image": "img/img (27).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -481,7 +481,7 @@
   },
   {
     "name": "Hot Bird",
-    "price": 10,
+    "price": 15,
     "image": "img/img (28).JPEG",
     "release_year": "2008",
     "segment": "Hot Wheels",
@@ -498,7 +498,7 @@
   },
   {
     "name": "'69 Dodge Coronet Super Bee",
-    "price": 10,
+    "price": 15,
     "image": "img/img (29).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -514,7 +514,7 @@
   },
   {
     "name": "BMW 2002",
-    "price": 10,
+    "price": 15,
     "image": "img/img (30).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -594,7 +594,7 @@
   },
   {
     "name": "'94 Bugatti EB110 SS",
-    "price": 10,
+    "price": 15,
     "image": "img/img (35).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -610,7 +610,7 @@
   },
   {
     "name": "Ford Escort",
-    "price": 10,
+    "price": 15,
     "image": "img/img (36).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -626,7 +626,7 @@
   },
   {
     "name": "Audi 90 Quattro",
-    "price": 10,
+    "price": 15,
     "image": "img/img (37).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -642,7 +642,7 @@
   },
   {
     "name": "Mercedes-Bens 500 E",
-    "price": 10,
+    "price": 15,
     "image": "img/img (38).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -658,7 +658,7 @@
   },
   {
     "name": "Nissan Skyline 2000GT-R LBWK",
-    "price": 10,
+    "price": 15,
     "image": "img/img (39).JPEG",
     "release_year": "2024",
     "segment": "Hot Wheels",
@@ -674,7 +674,7 @@
   },
   {
     "name": "Mazda RX-3",
-    "price": 10,
+    "price": 15,
     "image": "img/img (40).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -690,7 +690,7 @@
   },
   {
     "name": "Pagani Zonda Cinque",
-    "price": 10,
+    "price": 15,
     "image": "img/img (41).JPEG",
     "release_year": "2026",
     "segment": "Hot Wheels",
@@ -706,7 +706,7 @@
   },
   {
     "name": "'64 Impala",
-    "price": 10,
+    "price": 15,
     "image": "img/img (42).JPEG",
     "release_year": "2026",
     "segment": "Hot Wheels",
@@ -722,7 +722,7 @@
   },
   {
     "name": "Ford Mustang GTD",
-    "price": 10,
+    "price": 15,
     "image": "img/img (43).JPEG",
     "release_year": "2026",
     "segment": "Hot Wheels",
@@ -738,7 +738,7 @@
   },
   {
     "name": "Ford RS200",
-    "price": 10,
+    "price": 15,
     "image": "img/img (44).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -771,7 +771,7 @@
   },
   {
     "name": "Custom '18 Ford Mustang GT",
-    "price": 10,
+    "price": 15,
     "image": "img/img (46).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -851,7 +851,7 @@
   },
   {
     "name": "2020 Koenigsegg Jesko",
-    "price": 10,
+    "price": 15,
     "image": "img/img (51).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -867,7 +867,7 @@
   },
   {
     "name": "'23 Ram 1500",
-    "price": 10,
+    "price": 15,
     "image": "img/img (52).JPEG",
     "release_year": "2024",
     "segment": "Hot Wheels",
@@ -883,7 +883,7 @@
   },
   {
     "name": "'07 Ford Mustang",
-    "price": 10,
+    "price": 15,
     "image": "img/img (53).JPEG",
     "release_year": "2023",
     "segment": "Hot Wheels",
@@ -915,7 +915,7 @@
   },
   {
     "name": "'66 Buick Riviera",
-    "price": 10,
+    "price": 15,
     "image": "img/img (55).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -947,7 +947,7 @@
   },
   {
     "name": "DMC DeLorean",
-    "price": 10,
+    "price": 15,
     "image": "img/img (57).JPEG",
     "release_year": "2024",
     "segment": "Hot Wheels",
@@ -964,7 +964,7 @@
   },
   {
     "name": "Benz 500 SLC Rallye",
-    "price": 40,
+    "price": 45,
     "image": "img/img (59).JPEG",
     "release_year": "2025",
     "segment": "Premium",
@@ -980,7 +980,7 @@
   },
   {
     "name": "Renault Espace F1",
-    "price": 10,
+    "price": 15,
     "image": "img/img (60).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -1012,7 +1012,7 @@
   },
   {
     "name": "Maserati Shamal",
-    "price": 10,
+    "price": 15,
     "image": "img/img (62).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -1028,7 +1028,7 @@
   },
   {
     "name": "K.I.T.T.",
-    "price": 10,
+    "price": 15,
     "image": "img/img (63).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -1044,7 +1044,7 @@
   },
   {
     "name": "BMW I8 Roadster",
-    "price": 10,
+    "price": 15,
     "image": "img/img (64).JPEG",
     "release_year": "2023",
     "segment": "Hot Wheels",
@@ -1060,7 +1060,7 @@
   },
   {
     "name": "Tesla Model Y",
-    "price": 10,
+    "price": 15,
     "image": "img/img (65).JPEG",
     "release_year": "2023",
     "segment": "Hot Wheels",
@@ -1076,7 +1076,7 @@
   },
   {
     "name": "Mclaren Formula 1 Team",
-    "price": 35,
+    "price": 45,
     "image": "img/img (66).JPEG",
     "release_year": "2026",
     "segment": "Premium",
@@ -1092,7 +1092,7 @@
   },
   {
     "name": "Oracle Red Bull Racing",
-    "price": 35,
+    "price": 45,
     "image": "img/img (67).JPEG",
     "release_year": "2026",
     "segment": "Premium",
@@ -1124,7 +1124,7 @@
   },
   {
     "name": "Phastasm",
-    "price": 2,
+    "price": 5,
     "image": "img/img (70).JPEG",
     "release_year": "2005",
     "segment": "Hot Wheels",
@@ -1156,7 +1156,7 @@
   },
   {
     "name": "Trak-Tune",
-    "price": 2,
+    "price": 5,
     "image": "img/img (72).JPEG",
     "release_year": "2005",
     "segment": "Hot Wheels",
@@ -1172,7 +1172,7 @@
   },
   {
     "name": "Symbolic",
-    "price": 2,
+    "price": 5,
     "image": "img/img (73).JPEG",
     "release_year": "2005",
     "segment": "Hot Wheels",
@@ -1188,7 +1188,7 @@
   },
   {
     "name": "Acura HSC Concept",
-    "price": 2,
+    "price": 5,
     "image": "img/img (74).JPEG",
     "release_year": "2006",
     "segment": "Hot Wheels",
@@ -1204,7 +1204,7 @@
   },
   {
     "name": "Não identificado",
-    "price": 2,
+    "price": 5,
     "image": "img/img (75).JPEG",
     "release_year": "-",
     "segment": "Hot Wheels",
@@ -1220,7 +1220,7 @@
   },
   {
     "name": "Bullet Nose",
-    "price": 2,
+    "price": 5,
     "image": "img/img (76).JPEG",
     "release_year": "-",
     "segment": "Hot Wheels",
@@ -1236,7 +1236,7 @@
   },
   {
     "name": "Super Van",
-    "price": 10,
+    "price": 15,
     "image": "img/img (81).JPEG",
     "release_year": "2010",
     "segment": "Hot Wheels",
@@ -1285,7 +1285,7 @@
   },
   {
     "name": "MS-T Suzuka",
-    "price": 2,
+    "price": 5,
     "image": "img/img (85).JPEG",
     "release_year": "2006",
     "segment": "Hot Wheels",
@@ -1333,7 +1333,7 @@
   },
   {
     "name": "'07 Shelby GT-500",
-    "price": 10,
+    "price": 15,
     "image": "img/img (88).JPEG",
     "release_year": "2014",
     "segment": "Hot Wheels",
@@ -1477,7 +1477,7 @@
   },
   {
     "name": "Pass 'N Go",
-    "price": 5,
+    "price": 10,
     "image": "img/img (98).JPEG",
     "release_year": "2026",
     "segment": "Hot Wheels",
@@ -1493,7 +1493,7 @@
   },
   {
     "name": "Lexus SC400",
-    "price": 2,
+    "price": 5,
     "image": "img/img (99).JPEG",
     "release_year": "2003",
     "segment": "Hot Wheels",
@@ -1509,7 +1509,7 @@
   },
   {
     "name": "2006 Dodge Viper Coupe",
-    "price": 5,
+    "price": 10,
     "image": "img/img (100).JPEG",
     "release_year": "2009",
     "segment": "Hot Wheels",
@@ -1525,7 +1525,7 @@
   },
   {
     "name": "'87 Ford Sierra Cosworth",
-    "price": 10,
+    "price": 15,
     "image": "img/img (101).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -1541,7 +1541,7 @@
   },
   {
     "name": "Jaguar XJC V12 Coupe",
-    "price": 10,
+    "price": 15,
     "image": "img/img (102).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -1557,7 +1557,7 @@
   },
   {
     "name": "Ford Mustang Dark Horse",
-    "price": 10,
+    "price": 15,
     "image": "img/img (103).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -1590,7 +1590,7 @@
   },
   {
     "name": "2012 SRT Viper",
-    "price": 10,
+    "price": 15,
     "image": "img/img (105).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -1622,7 +1622,7 @@
   },
   {
     "name": "Lotus Cortina",
-    "price": 10,
+    "price": 12,
     "image": "img/img (107).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -1654,7 +1654,7 @@
   },
   {
     "name": "'68 Dodge Dart",
-    "price": 10,
+    "price": 15,
     "image": "img/img (109).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -1670,7 +1670,7 @@
   },
   {
     "name": "'70 Dodge Hemi Challenger",
-    "price": 10,
+    "price": 15,
     "image": "img/img (110).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -1686,7 +1686,7 @@
   },
   {
     "name": "20 Dodge Charger Hellcat",
-    "price": 10,
+    "price": 15,
     "image": "img/img (111).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -1702,7 +1702,7 @@
   },
   {
     "name": "Audi 90 Quattro",
-    "price": 10,
+    "price": 15,
     "image": "img/img (113).JPEG",
     "release_year": "2024",
     "segment": "Hot Wheels",
@@ -1718,7 +1718,7 @@
   },
   {
     "name": "Mercedes-Bens 500 E",
-    "price": 10,
+    "price": 15,
     "image": "img/img (114).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -1734,7 +1734,7 @@
   },
   {
     "name": "Nissa Skyline 2000GT-R LBWK",
-    "price": 10,
+    "price": 15,
     "image": "img/img (115).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -1750,7 +1750,7 @@
   },
   {
     "name": "DMC Deloeran",
-    "price": 10,
+    "price": 15,
     "image": "img/img (116).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -1766,7 +1766,7 @@
   },
   {
     "name": "Shelby Cobra \"Daytona\" Coupe",
-    "price": 10,
+    "price": 15,
     "image": "img/img (117).JPEG",
     "release_year": "2024",
     "segment": "Hot Wheels",
@@ -1782,7 +1782,7 @@
   },
   {
     "name": "Custom Kia EV6",
-    "price": 10,
+    "price": 15,
     "image": "img/img (118).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -1798,7 +1798,7 @@
   },
   {
     "name": "LB-Works Mclaren 720S",
-    "price": 35,
+    "price": 45,
     "image": "img/img (119).JPEG",
     "release_year": "2025",
     "segment": "Premium",
@@ -1814,7 +1814,7 @@
   },
   {
     "name": "Pagani Utopia",
-    "price": 10,
+    "price": 15,
     "image": "img/img (120).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -1830,7 +1830,7 @@
   },
   {
     "name": "Jaguar MK1",
-    "price": 10,
+    "price": 12,
     "image": "img/img (121).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -1846,7 +1846,7 @@
   },
   {
     "name": "Power Sander",
-    "price": 2,
+    "price": 5,
     "image": "img/img (122).JPEG",
     "release_year": "2005",
     "segment": "Hot Wheels",
@@ -1862,7 +1862,7 @@
   },
   {
     "name": "Crooze Slikt Back",
-    "price": 2,
+    "price": 5,
     "image": "img/img (123).JPEG",
     "release_year": "2004",
     "segment": "Hot Wheels",
@@ -1878,7 +1878,7 @@
   },
   {
     "name": "16 Angels",
-    "price": 2,
+    "price": 5,
     "image": "img/img (124).JPEG",
     "release_year": "2005",
     "segment": "Hot Wheels",
@@ -1894,7 +1894,7 @@
   },
   {
     "name": "Arachnorod",
-    "price": 2,
+    "price": 5,
     "image": "img/img (125).JPEG",
     "release_year": "2005",
     "segment": "Hot Wheels",
@@ -1910,7 +1910,7 @@
   },
   {
     "name": "Não identificado",
-    "price": 2,
+    "price": 5,
     "image": "img/img (126).JPEG",
     "release_year": "-",
     "segment": "Hot Wheels",
@@ -1926,7 +1926,7 @@
   },
   {
     "name": "Mitsubishi Eclipse",
-    "price": 2,
+    "price": 5,
     "image": "img/img (127).JPEG",
     "release_year": "2005",
     "segment": "Hot Wheels",
@@ -1942,7 +1942,7 @@
   },
   {
     "name": "Cat-A-Pult",
-    "price": 2,
+    "price": 5,
     "image": "img/img (128).JPEG",
     "release_year": "2004",
     "segment": "Hot Wheels",
@@ -1958,7 +1958,7 @@
   },
   {
     "name": "'69 Dodge Charger",
-    "price": 2,
+    "price": 5,
     "image": "img/img (129).JPEG",
     "release_year": "2005",
     "segment": "Hot Wheels",
@@ -1974,7 +1974,7 @@
   },
   {
     "name": "Não identificado",
-    "price": 2,
+    "price": 5,
     "image": "img/img (130).JPEG",
     "release_year": "-",
     "segment": "Hot Wheels",
@@ -1990,7 +1990,7 @@
   },
   {
     "name": "Ferrari 550 Maranello",
-    "price": 5,
+    "price": 10,
     "image": "img/img (131).JPEG",
     "release_year": "2004",
     "segment": "Hot Wheels",
@@ -2006,7 +2006,7 @@
   },
   {
     "name": "Crooze Wail Tale",
-    "price": 2,
+    "price": 5,
     "image": "img/img (132).JPEG",
     "release_year": "2004",
     "segment": "Hot Wheels",
@@ -2022,7 +2022,7 @@
   },
   {
     "name": "Slider",
-    "price": 2,
+    "price": 5,
     "image": "img/img (133).JPEG",
     "release_year": "2006",
     "segment": "Hot Wheels",
@@ -2038,7 +2038,7 @@
   },
   {
     "name": "MX48 Turbo",
-    "price": 2,
+    "price": 5,
     "image": "img/img (134).JPEG",
     "release_year": "2008",
     "segment": "Hot Wheels",
@@ -2070,7 +2070,7 @@
   },
   {
     "name": "Rocket Oil Special",
-    "price": 2,
+    "price": 5,
     "image": "img/img (136).JPEG",
     "release_year": "2005",
     "segment": "Hot Wheels",
@@ -2086,7 +2086,7 @@
   },
   {
     "name": "Mazda MX-5 Miata",
-    "price": 2,
+    "price": 5,
     "image": "img/img (137).JPEG",
     "release_year": "2003",
     "segment": "Hot Wheels",
@@ -2102,7 +2102,7 @@
   },
   {
     "name": "Monoposto",
-    "price": 2,
+    "price": 5,
     "image": "img/img (139).JPEG",
     "release_year": "2006",
     "segment": "Hot Wheels",
@@ -2118,7 +2118,7 @@
   },
   {
     "name": "Cadillac V-16",
-    "price": 2,
+    "price": 5,
     "image": "img/img (140).JPEG",
     "release_year": "2004",
     "segment": "Hot Wheels",
@@ -2134,7 +2134,7 @@
   },
   {
     "name": "'Tooned lamborghini Countach",
-    "price": 2,
+    "price": 5,
     "image": "img/img (141).JPEG",
     "release_year": "2004",
     "segment": "Hot Wheels",
@@ -2150,7 +2150,7 @@
   },
   {
     "name": "Split Decision",
-    "price": 2,
+    "price": 5,
     "image": "img/img (142).JPEG",
     "release_year": "2005",
     "segment": "Hot Wheels",
@@ -2166,7 +2166,7 @@
   },
   {
     "name": "Acura HSC Concpet",
-    "price": 2,
+    "price": 5,
     "image": "img/img (143).JPEG",
     "release_year": "2005",
     "segment": "Hot Wheels",
@@ -2182,7 +2182,7 @@
   },
   {
     "name": "Mitsubishi Pajero Evolution",
-    "price": 2,
+    "price": 5,
     "image": "img/img (144).JPEG",
     "release_year": "2004",
     "segment": "Hot Wheels",
@@ -2198,7 +2198,7 @@
   },
   {
     "name": "Bassline",
-    "price": 2,
+    "price": 5,
     "image": "img/img (145).JPEG",
     "release_year": "2007",
     "segment": "Hot Wheels",
@@ -2214,7 +2214,7 @@
   },
   {
     "name": "Dogfighter",
-    "price": 2,
+    "price": 5,
     "image": "img/img (146).JPEG",
     "release_year": "2007",
     "segment": "Archives",
@@ -2230,7 +2230,7 @@
   },
   {
     "name": "Super Gnat",
-    "price": 2,
+    "price": 5,
     "image": "img/img (147).JPEG",
     "release_year": "2004",
     "segment": "Hot Wheels",
@@ -2245,8 +2245,8 @@
     "observation": "Possui detalhes de desgaste"
   },
   {
-    "name": "SeaRed Tuner",
-    "price": 2,
+    "name": "Seared Tuner",
+    "price": 25,
     "image": "img/img (148).JPEG",
     "release_year": "2002",
     "segment": "Hot Wheels",
@@ -2262,7 +2262,7 @@
   },
   {
     "name": "Rockster",
-    "price": 2,
+    "price": 5,
     "image": "img/img (149).JPEG",
     "release_year": "2005",
     "segment": "Hot Wheels",
