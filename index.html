@@ -654,6 +654,7 @@
           document.body.removeChild(a);
         } else {
           const zip = new JSZip();
+          const usedNames = {};
           
           for (let i = 0; i < selectedCars.length; i++) {
             const car = selectedCars[i];
@@ -669,7 +670,15 @@
             });
             
             const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
-            const cleanName = String(car.name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+            let cleanName = String(car.name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+            
+            if (usedNames[cleanName]) {
+              usedNames[cleanName]++;
+              cleanName = `${cleanName}-${usedNames[cleanName]}`;
+            } else {
+              usedNames[cleanName] = 1;
+            }
+            
             zip.file(`hotwheels-${cleanName}.png`, blob);
             
             tempContainer.removeChild(cardElement);
