@@ -543,7 +543,7 @@
         const canvas = await html2canvas(cardElement, {
           useCORS: true,
           scale: 2,
-          backgroundColor: null // transparent corners
+          backgroundColor: '#0b1124' // solid dark theme background for text contrast
         });
 
         if (actionsContainer) {
@@ -641,7 +641,7 @@
           const canvas = await html2canvas(cardElement, {
             useCORS: true,
             scale: 2,
-            backgroundColor: null
+            backgroundColor: '#0b1124'
           });
           
           const url = canvas.toDataURL('image/png');
@@ -666,7 +666,7 @@
             const canvas = await html2canvas(cardElement, {
               useCORS: true,
               scale: 2,
-              backgroundColor: null
+              backgroundColor: '#0b1124'
             });
             
             const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
