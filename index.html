@@ -6,6 +6,8 @@
   <title>Hot Wheels | Catálogo de Vendas</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.3/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 <body>
   <div class="page-shell">
@@ -17,6 +19,7 @@
             <h3>Escolha um ou mais modelos</h3>
           </div>
           <div class="header-actions">
+            <button id="selectAllPage" class="ghost-btn">Selecionar pág. atual</button>
             <button id="selectAll" class="ghost-btn">Selecionar todos</button>
             <button id="clearSelection" class="ghost-btn">Limpar</button>
           </div>
@@ -35,6 +38,7 @@
           <div class="action-buttons">
             <button id="whatsappBtn" class="primary-btn" disabled>Enviar pelo WhatsApp</button>
             <button id="downloadBtn" class="secondary-btn" disabled>Criar lista</button>
+            <button id="downloadImagesBtn" class="secondary-btn" disabled>Baixar Cards (PNG)</button>
           </div>
         </div>
       </section>
@@ -76,6 +80,8 @@
     const downloadBtn = document.getElementById('downloadBtn');
     const selectAllBtn = document.getElementById('selectAll');
     const clearSelectionBtn = document.getElementById('clearSelection');
+    const selectAllPageBtn = document.getElementById('selectAllPage');
+    const downloadImagesBtn = document.getElementById('downloadImagesBtn');
     let selectedCars = [];
 
     const formatPrice = (value) => value.toLocaleString('pt-BR', {
@@ -264,6 +270,7 @@
         selectionSummary.style.display = 'none';
         whatsappBtn.disabled = true;
         downloadBtn.disabled = true;
+        downloadImagesBtn.disabled = true;
         return;
       }
 
@@ -291,14 +298,16 @@
 
       whatsappBtn.disabled = false;
       downloadBtn.disabled = false;
+      downloadImagesBtn.disabled = false;
     };
 
     const populateDropdown = () => {
       carSelect.innerHTML = '<option value="">Selecione um carrinho</option>';
       cars.forEach((car) => {
         const option = document.createElement('option');
-        option.value = car.name;
-        option.textContent = car.name;
+        option.value = car.id;
+        const suffix = car.release_year ? ` (${car.release_year})` : '';
+        option.textContent = `${car.name}${suffix}`;
         carSelect.appendChild(option);
       });
     };
@@ -475,7 +484,13 @@
               <div><span>Interior color</span><strong>${car.interior_color}</strong></div>
               <div><span>Base material</span><strong>${car.base_material}</strong></div>
             </div>
-            <button class="select-btn" data-name="${car.name}">Selecionar</button>
+            <div class="card-actions">
+              <button class="select-btn" data-id="${car.id}">Selecionar</button>
+              <button class="download-card-btn" data-id="${car.id}" title="Salvar card como imagem">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Salvar Card
+              </button>
+            </div>
           </div>
         `;
         catalog.appendChild(card);
@@ -512,10 +527,181 @@
     });
 
 
+    const downloadCardAsImage = async (cardElement, carName) => {
+      const actionsContainer = cardElement.querySelector('.card-actions');
+      if (actionsContainer) {
+        actionsContainer.style.visibility = 'hidden';
+      }
+
+      const originalTransform = cardElement.style.transform;
+      const originalTransition = cardElement.style.transition;
+      
+      cardElement.style.transform = 'none';
+      cardElement.style.transition = 'none';
+
+      try {
+        const canvas = await html2canvas(cardElement, {
+          useCORS: true,
+          scale: 2,
+          backgroundColor: null // transparent corners
+        });
+
+        if (actionsContainer) {
+          actionsContainer.style.visibility = 'visible';
+        }
+        cardElement.style.transform = originalTransform;
+        cardElement.style.transition = originalTransition;
+
+        const url = canvas.toDataURL('image/png');
+        const a = document.createElement('a');
+        
+        const cleanName = String(carName)
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/(^-|-$)/g, '');
+        
+        a.href = url;
+        a.download = `hotwheels-${cleanName}.png`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } catch (error) {
+        console.error('Erro ao gerar imagem do card:', error);
+        alert('Não foi possível salvar o card como imagem.');
+        
+        if (actionsContainer) {
+          actionsContainer.style.visibility = 'visible';
+        }
+        cardElement.style.transform = originalTransform;
+        cardElement.style.transition = originalTransition;
+      }
+    };
+
+    const generateCardElement = (car) => {
+      const card = document.createElement('article');
+      card.className = 'car-card';
+      
+      const borderClass = getSpecialBorderClass(car);
+      if (borderClass) {
+        card.classList.add(borderClass);
+      }
+
+      const badgeLabel = getSpecialBadgeLabel(car);
+      const badgeClass = badgeLabel ? getSpecialBadgeClass(car) : '';
+      const badgeMarkup = badgeLabel ? `<span class="special-badge ${badgeClass}">${badgeLabel}</span>` : '';
+
+      card.innerHTML = `
+        <img src="${car.image}" alt="${car.name}" />
+        <div class="card-body">
+          <div class="card-top">
+            <div>
+              <p class="card-category">${car.segment}</p>
+              <h3>${car.name}</h3>
+            </div>
+            <span class="price">${formatPrice(car.price)}</span>
+          </div>
+          ${badgeMarkup}
+          <div class="spec-grid">
+            <div><span>Release</span><strong>${car.release_year}</strong></div>
+            <div><span>Assortment</span><strong>${car.assortment}</strong></div>
+            <div><span>Series</span><strong>${car.series}</strong></div>
+            <div><span>Scale</span><strong>${car.scale}</strong></div>
+            <div><span>Base color</span><strong>${car.base_color}</strong></div>
+            <div><span>Body color</span><strong>${car.body_color}</strong></div>
+            <div><span>Window color</span><strong>${car.window_color}</strong></div>
+            <div><span>Interior color</span><strong>${car.interior_color}</strong></div>
+            <div><span>Base material</span><strong>${car.base_material}</strong></div>
+          </div>
+        </div>
+      `;
+      return card;
+    };
+
+    const downloadSelectedCardsAsImages = async () => {
+      if (!selectedCars.length) return;
+
+      const originalText = downloadImagesBtn.textContent;
+      downloadImagesBtn.disabled = true;
+
+      const tempContainer = document.createElement('div');
+      tempContainer.style.position = 'absolute';
+      tempContainer.style.left = '-9999px';
+      tempContainer.style.top = '0';
+      tempContainer.style.width = '320px';
+      document.body.appendChild(tempContainer);
+
+      try {
+        if (selectedCars.length === 1) {
+          const car = selectedCars[0];
+          downloadImagesBtn.textContent = 'Gerando card...';
+          
+          const cardElement = generateCardElement(car);
+          tempContainer.appendChild(cardElement);
+          
+          const canvas = await html2canvas(cardElement, {
+            useCORS: true,
+            scale: 2,
+            backgroundColor: null
+          });
+          
+          const url = canvas.toDataURL('image/png');
+          const a = document.createElement('a');
+          const cleanName = String(car.name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+          a.href = url;
+          a.download = `hotwheels-${cleanName}.png`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        } else {
+          const zip = new JSZip();
+          
+          for (let i = 0; i < selectedCars.length; i++) {
+            const car = selectedCars[i];
+            downloadImagesBtn.textContent = `Gerando (${i + 1}/${selectedCars.length})`;
+            
+            const cardElement = generateCardElement(car);
+            tempContainer.appendChild(cardElement);
+            
+            const canvas = await html2canvas(cardElement, {
+              useCORS: true,
+              scale: 2,
+              backgroundColor: null
+            });
+            
+            const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+            const cleanName = String(car.name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+            zip.file(`hotwheels-${cleanName}.png`, blob);
+            
+            tempContainer.removeChild(cardElement);
+            await new Promise((r) => setTimeout(r, 50));
+          }
+          
+          downloadImagesBtn.textContent = 'Criando ZIP...';
+          const content = await zip.generateAsync({ type: 'blob' });
+          
+          const url = URL.createObjectURL(content);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'hotwheels_cards_selecionados.zip';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }
+      } catch (error) {
+        console.error('Erro ao gerar imagens dos cards:', error);
+        alert('Ocorreu um erro ao baixar as imagens dos cards.');
+      } finally {
+        document.body.removeChild(tempContainer);
+        downloadImagesBtn.textContent = originalText;
+        downloadImagesBtn.disabled = false;
+      }
+    };
+
     const toggleSelection = (car) => {
-      const exists = selectedCars.some((item) => item.name === car.name);
+      const exists = selectedCars.some((item) => item.id === car.id);
       if (exists) {
-        selectedCars = selectedCars.filter((item) => item.name !== car.name);
+        selectedCars = selectedCars.filter((item) => item.id !== car.id);
       } else {
         selectedCars = [...selectedCars, car];
       }
@@ -528,18 +714,18 @@
     const updateCardSelectionState = () => {
       document.querySelectorAll('.car-card').forEach((card) => {
         const button = card.querySelector('.select-btn');
-        const carName = button?.dataset.name;
-        const isSelected = selectedCars.some((item) => item.name === carName);
+        const carId = button?.dataset.id;
+        const isSelected = selectedCars.some((item) => item.id === carId);
         card.classList.toggle('is-selected', isSelected);
         button.textContent = isSelected ? 'Selecionado' : 'Selecionar';
       });
     };
 
     carSelect.addEventListener('change', (event) => {
-      const car = cars.find((item) => item.name === event.target.value);
+      const car = cars.find((item) => item.id === event.target.value);
       if (car) {
         toggleSelection(car);
-        const carIndex = cars.findIndex((item) => item.name === car.name);
+        const carIndex = cars.findIndex((item) => item.id === car.id);
         if (carIndex !== -1) {
           const targetPage = Math.floor(carIndex / itemsPerPage) + 1;
           if (targetPage !== currentPage) {
@@ -550,12 +736,23 @@
       }
     });
 
-    catalog.addEventListener('click', (event) => {
-      const button = event.target.closest('.select-btn');
-      if (!button) return;
-      const car = cars.find((item) => item.name === button.dataset.name);
-      if (car) {
-        toggleSelection(car);
+    catalog.addEventListener('click', async (event) => {
+      const selectBtn = event.target.closest('.select-btn');
+      if (selectBtn) {
+        const car = cars.find((item) => item.id === selectBtn.dataset.id);
+        if (car) {
+          toggleSelection(car);
+        }
+        return;
+      }
+
+      const downloadBtn = event.target.closest('.download-card-btn');
+      if (downloadBtn) {
+        const card = downloadBtn.closest('.car-card');
+        if (card) {
+          const car = cars.find((item) => item.id === downloadBtn.dataset.id);
+          await downloadCardAsImage(card, car ? car.name : 'carrinho');
+        }
       }
     });
 
@@ -583,6 +780,26 @@
       updateCardSelectionState();
     });
 
+    selectAllPageBtn.addEventListener('click', () => {
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = Math.min(startIndex + itemsPerPage, filteredCars.length);
+      const visibleCars = filteredCars.slice(startIndex, endIndex);
+
+      visibleCars.forEach((car) => {
+        if (!selectedCars.some((item) => item.id === car.id)) {
+          selectedCars.push(car);
+        }
+      });
+
+      carSelect.value = '';
+      renderSelectedCars();
+      updateCardSelectionState();
+    });
+
+    downloadImagesBtn.addEventListener('click', () => {
+      downloadSelectedCardsAsImages();
+    });
+
     const init = async () => {
       try {
         catalog.innerHTML = '<p class="empty-selection">Carregando catálogo...</p>';
@@ -591,6 +808,10 @@
           throw new Error('Falha ao carregar o arquivo JSON.');
         }
         cars = await response.json();
+        // Atribuir IDs únicos baseados no índice para diferenciar duplicatas
+        cars.forEach((car, index) => {
+          car.id = `car-${index}`;
+        });
         filteredCars = [...cars];
         
         populateDropdown();

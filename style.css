@@ -223,11 +223,55 @@ body::before {
   border: 1px solid var(--border);
 }
 
-.select-btn {
-  width: 100%;
+.card-actions {
+  display: flex;
+  gap: 8px;
   margin-top: 14px;
+}
+
+.select-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  flex: 1.2;
+  margin-top: 0;
   background: rgba(255,255,255,0.14);
   color: var(--text);
+}
+
+.download-card-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease;
+  flex: 1;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.85rem;
+}
+
+.download-card-btn:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.download-card-btn svg {
+  stroke: var(--muted);
+  transition: stroke 0.2s ease;
+}
+
+.download-card-btn:hover svg {
+  stroke: var(--text);
 }
 
 button:disabled {
