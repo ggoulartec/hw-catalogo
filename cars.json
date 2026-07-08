@@ -353,7 +353,7 @@
   },
   {
     "name": "Toyota Celica",
-    "price": 2,
+    "price": 5,
     "image": "img/img (19).JPEG",
     "release_year": "2006",
     "segment": "Hot Wheels",
@@ -385,7 +385,7 @@
   },
   {
     "name": "C6 Covette",
-    "price": 2,
+    "price": 5,
     "image": "img/img (21).JPEG",
     "release_year": "2006",
     "segment": "Hot Wheels",
@@ -1140,7 +1140,7 @@
   },
   {
     "name": "Toyota MR2 ('Tooned')",
-    "price": 2,
+    "price": 5,
     "image": "img/img (71).JPEG",
     "release_year": "2004",
     "segment": "Hot Wheels",
@@ -1301,7 +1301,7 @@
   },
   {
     "name": "1969 Ponatiac GTO Judge",
-    "price": 2,
+    "price": 5,
     "image": "img/img (86).JPEG",
     "release_year": "2003",
     "segment": "Hot Wheels",
@@ -1365,7 +1365,7 @@
   },
   {
     "name": "Grand Prix Racer",
-    "price": 2,
+    "price": 5,
     "image": "img/img (91).JPEG",
     "release_year": "2006",
     "segment": "Archives",
@@ -1381,7 +1381,7 @@
   },
   {
     "name": "Rollin' Solo",
-    "price": 2,
+    "price": 5,
     "image": "img/img (92).JPEG",
     "release_year": "2023",
     "segment": "Hot Wheels",
@@ -1445,7 +1445,7 @@
   },
   {
     "name": "Lotus Espirit",
-    "price": 2,
+    "price": 5,
     "image": "img/img (96).JPEG",
     "release_year": "2006",
     "segment": "Hot Wheels",
@@ -1461,7 +1461,7 @@
   },
   {
     "name": "RRRoadster",
-    "price": 2,
+    "price": 5,
     "image": "img/img (97).JPEG",
     "release_year": "2014",
     "segment": "Hot Wheels",
@@ -2054,7 +2054,7 @@
   },
   {
     "name": "Outsider",
-    "price": 2,
+    "price": 5,
     "image": "img/img (135).JPEG",
     "release_year": "2008",
     "segment": "Hot Wheels",
