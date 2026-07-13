@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,6 +10,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
+
 <body>
   <div class="page-shell">
     <main>
@@ -48,12 +50,7 @@
           <label for="searchInput" class="filter-label">
             <span>🔍 Buscar por nome</span>
           </label>
-          <input 
-            type="text" 
-            id="searchInput" 
-            placeholder="Digite o nome do Hot Wheels..." 
-            class="search-input"
-          />
+          <input type="text" id="searchInput" placeholder="Digite o nome do Hot Wheels..." class="search-input" />
           <button id="clearFilter" class="filter-clear-btn" style="display: none;">Limpar busca</button>
         </div>
       </section>
@@ -93,13 +90,16 @@
       const segment = String(car.segment || '').toLowerCase();
       const series = String(car.series || '').toLowerCase();
       const rarity = String(car.rarity || '').toLowerCase();
+      const assortment = String(car.assortment || '').toLowerCase();
       const isSilverSeries = segment.includes('silver series');
       const isPremiumSeries = segment.includes('premium');
+      const is100PercentSeries = assortment.includes('100%');
       const isTreasureHuntSeries = /treasure hunts?/i.test(series);
       const isTreasureHuntRarity = rarity.includes('treasure hunt') || rarity.includes('chase');
 
       if (isSilverSeries || isTreasureHuntRarity) return 'silver-border';
-      if (isPremiumSeries || isTreasureHuntSeries) return 'gold-border';
+      if (isPremiumSeries || isTreasureHuntSeries || is100PercentSeries) return 'gold-border';
+      if (is100PercentSeries) return 'red-border';
       return '';
     };
 
@@ -107,8 +107,11 @@
       const segment = String(car.segment || '').toLowerCase();
       const rarity = String(car.rarity || '').trim();
       const series = String(car.series || '').toLowerCase();
+      const assortment = String(car.assortment || '').toLowerCase();
+
       if (segment.includes('silver series')) return 'Silver Series';
       if (segment.includes('premium')) return 'Premium';
+      if (assortment.includes('100%')) return '100%';
       if (rarity.toLowerCase().includes('treasure hunt')) return 'Treasure Hunt';
       if (rarity.toLowerCase().includes('chase')) return 'Chase';
       if (/treasure hunts?/i.test(series)) return 'Treasure Hunt';
@@ -119,8 +122,11 @@
     const getSpecialBadgeClass = (car) => {
       const segment = String(car.segment || '').toLowerCase();
       const rarity = String(car.rarity || '').toLowerCase();
+      const assortment = String(car.assortment || '').toLowerCase();
+
       if (segment.includes('premium')) return 'gold-badge';
       if (segment.includes('silver series') || rarity.includes('treasure hunt') || rarity.includes('chase')) return 'silver-badge';
+      if (assortment.includes('100%')) return 'red-badge';
       return 'default-badge';
     };
 
@@ -360,7 +366,7 @@
       // Janela inteligente de paginação
       const pagesToShow = [];
       const range = 1; // páginas ao redor da atual
-      
+
       for (let i = 1; i <= totalPages; i++) {
         if (i === 1 || i === totalPages || (i >= currentPage - range && i <= currentPage + range)) {
           pagesToShow.push(i);
@@ -452,7 +458,7 @@
       pageCars.forEach((car) => {
         const card = document.createElement('article');
         card.className = 'car-card';
-        
+
         const borderClass = getSpecialBorderClass(car);
         if (borderClass) {
           card.classList.add(borderClass);
@@ -463,7 +469,7 @@
         const badgeMarkup = badgeLabel ? `<span class="special-badge ${badgeClass}">${badgeLabel}</span>` : '';
 
         card.innerHTML = `
-          <img src="${car.image}" alt="${car.name}" />
+          <div class="car-card__image" style="background-image: url('${car.image}');" role="img" aria-label="${car.name}"></div>
           <div class="card-body">
             <div class="card-top">
               <div>
@@ -530,12 +536,12 @@
     const downloadCardAsImage = async (cardElement, carName) => {
       const actionsContainer = cardElement.querySelector('.card-actions');
       if (actionsContainer) {
-        actionsContainer.style.visibility = 'hidden';
+        actionsContainer.style.display = 'none';
       }
 
       const originalTransform = cardElement.style.transform;
       const originalTransition = cardElement.style.transition;
-      
+
       cardElement.style.transform = 'none';
       cardElement.style.transition = 'none';
 
@@ -547,19 +553,19 @@
         });
 
         if (actionsContainer) {
-          actionsContainer.style.visibility = 'visible';
+          actionsContainer.style.display = 'flex';
         }
         cardElement.style.transform = originalTransform;
         cardElement.style.transition = originalTransition;
 
         const url = canvas.toDataURL('image/png');
         const a = document.createElement('a');
-        
+
         const cleanName = String(carName)
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, '-')
           .replace(/(^-|-$)/g, '');
-        
+
         a.href = url;
         a.download = `hotwheels-${cleanName}.png`;
         document.body.appendChild(a);
@@ -568,9 +574,9 @@
       } catch (error) {
         console.error('Erro ao gerar imagem do card:', error);
         alert('Não foi possível salvar o card como imagem.');
-        
+
         if (actionsContainer) {
-          actionsContainer.style.visibility = 'visible';
+          actionsContainer.style.display = 'flex';
         }
         cardElement.style.transform = originalTransform;
         cardElement.style.transition = originalTransition;
@@ -580,7 +586,7 @@
     const generateCardElement = (car) => {
       const card = document.createElement('article');
       card.className = 'car-card';
-      
+
       const borderClass = getSpecialBorderClass(car);
       if (borderClass) {
         card.classList.add(borderClass);
@@ -591,7 +597,7 @@
       const badgeMarkup = badgeLabel ? `<span class="special-badge ${badgeClass}">${badgeLabel}</span>` : '';
 
       card.innerHTML = `
-        <img src="${car.image}" alt="${car.name}" />
+        <div class="car-card__image" style="background-image: url('${car.image}');" role="img" aria-label="${car.name}"></div>
         <div class="card-body">
           <div class="card-top">
             <div>
@@ -634,16 +640,16 @@
         if (selectedCars.length === 1) {
           const car = selectedCars[0];
           downloadImagesBtn.textContent = 'Gerando card...';
-          
+
           const cardElement = generateCardElement(car);
           tempContainer.appendChild(cardElement);
-          
+
           const canvas = await html2canvas(cardElement, {
             useCORS: true,
             scale: 2,
             backgroundColor: '#0b1124'
           });
-          
+
           const url = canvas.toDataURL('image/png');
           const a = document.createElement('a');
           const cleanName = String(car.name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -655,39 +661,39 @@
         } else {
           const zip = new JSZip();
           const usedNames = {};
-          
+
           for (let i = 0; i < selectedCars.length; i++) {
             const car = selectedCars[i];
             downloadImagesBtn.textContent = `Gerando (${i + 1}/${selectedCars.length})`;
-            
+
             const cardElement = generateCardElement(car);
             tempContainer.appendChild(cardElement);
-            
+
             const canvas = await html2canvas(cardElement, {
               useCORS: true,
               scale: 2,
               backgroundColor: '#0b1124'
             });
-            
+
             const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
             let cleanName = String(car.name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-            
+
             if (usedNames[cleanName]) {
               usedNames[cleanName]++;
               cleanName = `${cleanName}-${usedNames[cleanName]}`;
             } else {
               usedNames[cleanName] = 1;
             }
-            
+
             zip.file(`hotwheels-${cleanName}.png`, blob);
-            
+
             tempContainer.removeChild(cardElement);
             await new Promise((r) => setTimeout(r, 50));
           }
-          
+
           downloadImagesBtn.textContent = 'Criando ZIP...';
           const content = await zip.generateAsync({ type: 'blob' });
-          
+
           const url = URL.createObjectURL(content);
           const a = document.createElement('a');
           a.href = url;
@@ -822,7 +828,7 @@
           car.id = `car-${index}`;
         });
         filteredCars = [...cars];
-        
+
         populateDropdown();
         renderPage(1);
         renderSelectedCars();
@@ -836,4 +842,5 @@
     init();
   </script>
 </body>
+
 </html>
