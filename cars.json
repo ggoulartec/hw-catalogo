@@ -242,7 +242,7 @@
   {
     "name": "Custom ' 72 Chevy Luv",
     "price": 12,
-    "image": "img/img (7).JPEG",
+    "image": "img/premium_chevyluv_ad.png",
     "release_year": "2024",
     "segment": "Hot Wheels",
     "assortment": "Mainline",
@@ -258,7 +258,7 @@
   {
     "name": "'40 Ford Pickup",
     "price": 10,
-    "image": "img/img (10).JPEG",
+    "image": "img/premium_ford40_ad.png",
     "release_year": "2006",
     "segment": "Hot Wheels",
     "assortment": "Mainline",
@@ -274,7 +274,7 @@
   {
     "name": "Silverado EV RST",
     "price": 12,
-    "image": "img/img (13).JPEG",
+    "image": "img/premium_silverado_ad.png",
     "release_year": "2025",
     "segment": "Hot Wheels",
     "assortment": "Mainline",
@@ -306,7 +306,7 @@
   {
     "name": "Peugeot 9x8 Hypercar",
     "price": 12,
-    "image": "img/img (18).JPEG",
+    "image": "img/premium_peugeot_ad.png",
     "release_year": "2025",
     "segment": "Hot Wheels",
     "assortment": "Mainline",
@@ -338,7 +338,7 @@
   {
     "name": "C6 Corvette",
     "price": 5,
-    "image": "img/img (21).JPEG",
+    "image": "img/premium_corvette_ad.png",
     "release_year": "2006",
     "segment": "Hot Wheels",
     "assortment": "Mainline",
@@ -354,7 +354,7 @@
   {
     "name": "'66 Chevy Nova",
     "price": 10,
-    "image": "img/img (22).JPEG",
+    "image": "img/premium_chevynova_ad.png",
     "release_year": "2007",
     "segment": "Hot Wheels",
     "assortment": "Mainline",
@@ -370,7 +370,7 @@
   {
     "name": "'74 Brazilian Dodge Charger",
     "price": 12,
-    "image": "img/img (25).JPEG",
+    "image": "img/premium_dodgecharger_ad.png",
     "release_year": "2025",
     "segment": "Hot Wheels",
     "assortment": "Mainline",
@@ -386,7 +386,7 @@
   {
     "name": "BMW 635 CSI",
     "price": 12,
-    "image": "img/img (26).JPEG",
+    "image": "img/premium_bmw635_ad.png",
     "release_year": "2025",
     "segment": "Hot Wheels",
     "assortment": "Mainline",
