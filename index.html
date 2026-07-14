@@ -98,7 +98,7 @@
       const isTreasureHuntRarity = rarity.includes('treasure hunt') || rarity.includes('chase');
 
       if (isSilverSeries || isTreasureHuntRarity) return 'silver-border';
-      if (isPremiumSeries || isTreasureHuntSeries || is100PercentSeries) return 'gold-border';
+      if (isPremiumSeries || isTreasureHuntSeries) return 'gold-border';
       if (is100PercentSeries) return 'red-border';
       return '';
     };
