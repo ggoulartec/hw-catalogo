@@ -402,7 +402,7 @@
   {
     "name": "2018 Bentley Continental GT3",
     "price": 12,
-    "image": "img/img (27).JPEG",
+    "image": "img/premium_bentley_ad.png",
     "release_year": "2025",
     "segment": "Hot Wheels",
     "assortment": "Mainline",
@@ -418,7 +418,7 @@
   {
     "name": "'69 Dodge Coronet Super Bee",
     "price": 12,
-    "image": "img/img (29).JPEG",
+    "image": "img/premium_dodgecoronet_ad.png",
     "release_year": "2025",
     "segment": "Hot Wheels",
     "assortment": "Mainline",
@@ -434,7 +434,7 @@
   {
     "name": "BMW 2002",
     "price": 12,
-    "image": "img/img (30).JPEG",
+    "image": "img/premium_bmw2002_ad.png",
     "release_year": "2025",
     "segment": "Hot Wheels",
     "assortment": "Mainline",
@@ -450,7 +450,7 @@
   {
     "name": "Volkswagen Golf MK2",
     "price": 20,
-    "image": "img/img (31).JPEG",
+    "image": "img/premium_golf_ad.png",
     "release_year": "2022",
     "segment": "Silver Series",
     "assortment": "Themed Automotive",
@@ -466,7 +466,7 @@
   {
     "name": "'87 Buick Regal GNX",
     "price": 20,
-    "image": "img/img (32).JPEG",
+    "image": "img/premium_buick_ad.png",
     "release_year": "2025",
     "segment": "Silver Series",
     "assortment": "Themed Multi-Packs",
@@ -482,7 +482,7 @@
   {
     "name": "Dodge Viper RT10",
     "price": 20,
-    "image": "img/img (33).JPEG",
+    "image": "img/premium_viper_ad.png",
     "release_year": "2025",
     "segment": "Silver Series",
     "assortment": "Themed Multi-Packs",
@@ -498,7 +498,7 @@
   {
     "name": "'94 Bugatti EB110 SS",
     "price": 12,
-    "image": "img/img (35).JPEG",
+    "image": "img/premium_bugatti_ad.png",
     "release_year": "2025",
     "segment": "Hot Wheels",
     "assortment": "Mainline",
@@ -514,7 +514,7 @@
   {
     "name": "Ford Escort",
     "price": 12,
-    "image": "img/img (36).JPEG",
+    "image": "img/premium_escort_ad.png",
     "release_year": "2025",
     "segment": "Hot Wheels",
     "assortment": "Mainline",
@@ -530,7 +530,7 @@
   {
     "name": "Audi 90 Quattro",
     "price": 12,
-    "image": "img/img (37).JPEG",
+    "image": "img/premium_audi_ad.png",
     "release_year": "2025",
     "segment": "Hot Wheels",
     "assortment": "Mainline",
@@ -546,7 +546,7 @@
   {
     "name": "Mercedes-Bens 500 E",
     "price": 12,
-    "image": "img/img (38).JPEG",
+    "image": "img/premium_mercedes_ad.png",
     "release_year": "2025",
     "segment": "Hot Wheels",
     "assortment": "Mainline",
@@ -562,7 +562,7 @@
   {
     "name": "Nissan Skyline 2000GT-R LBWK",
     "price": 12,
-    "image": "img/img (39).JPEG",
+    "image": "img/premium_toonedskyline_ad.png",
     "release_year": "2024",
     "segment": "Hot Wheels",
     "assortment": "Mainline",
@@ -578,7 +578,7 @@
   {
     "name": "Mazda RX-3",
     "price": 12,
-    "image": "img/img (40).JPEG",
+    "image": "img/premium_toonedmazda_ad.png",
     "release_year": "2025",
     "segment": "Hot Wheels",
     "assortment": "Mainline",
@@ -594,7 +594,7 @@
   {
     "name": "Pagani Zonda Cinque",
     "price": 12,
-    "image": "img/img (41).JPEG",
+    "image": "img/premium_zonda_ad.png",
     "release_year": "2026",
     "segment": "Hot Wheels",
     "assortment": "Mainline",
@@ -610,7 +610,7 @@
   {
     "name": "'64 Impala",
     "price": 12,
-    "image": "img/img (42).JPEG",
+    "image": "img/premium_impala_ad.png",
     "release_year": "2026",
     "segment": "Hot Wheels",
     "assortment": "Mainline",
@@ -626,7 +626,7 @@
   {
     "name": "Ford Mustang GTD",
     "price": 12,
-    "image": "img/img (43).JPEG",
+    "image": "img/premium_mustanggtd_ad.png",
     "release_year": "2026",
     "segment": "Hot Wheels",
     "assortment": "Mainline",
@@ -642,7 +642,7 @@
   {
     "name": "Ford RS200",
     "price": 12,
-    "image": "img/img (44).JPEG",
+    "image": "img/premium_rs200_ad.png",
     "release_year": "2025",
     "segment": "Hot Wheels",
     "assortment": "Mainline",
