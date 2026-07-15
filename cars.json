@@ -721,7 +721,7 @@
   },
   {
     "name": "Toyota Celica",
-    "price": 20,
+    "price": 60,
     "image": "img/premium_redcelica_ad.png",
     "release_year": "2026",
     "segment": "Silver Series",
@@ -737,7 +737,7 @@
   },
   {
     "name": "Volkswagen Jetta Mk3",
-    "price": 20,
+    "price": 70,
     "image": "img/premium_jetta_ad.png",
     "release_year": "2026",
     "segment": "Silver Series",
