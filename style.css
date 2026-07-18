@@ -658,3 +658,351 @@ button:disabled {
     grid-template-columns: 1fr 1fr;
   }
 }
+
+/* Painel Admin & Toggles */
+#adminToggleBtn.active {
+  background: rgba(255, 122, 0, 0.2);
+  border-color: var(--accent);
+  color: #ffd1a6;
+  box-shadow: 0 0 12px rgba(255, 122, 0, 0.25);
+}
+
+.hero-actions-container {
+  display: flex;
+  gap: 12px;
+}
+
+.admin-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 16px 20px;
+  border-radius: 20px;
+  border: 1px dashed var(--accent);
+  background: rgba(255, 122, 0, 0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  margin-bottom: 24px;
+  box-shadow: 0 0 20px rgba(255, 122, 0, 0.08);
+}
+
+.admin-bar__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffd1a6;
+}
+
+.admin-bar__actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Card Visual Overlays & Badges */
+.car-card {
+  position: relative;
+}
+
+.status-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 5;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.status-badge--sold {
+  background: rgba(231, 76, 60, 0.85);
+  border: 1px solid #e74c3c;
+  color: #fff;
+}
+
+.status-badge--reserved {
+  background: rgba(241, 196, 15, 0.85);
+  border: 1px solid #f1c40f;
+  color: #0b1124;
+}
+
+.status-badge--available {
+  background: rgba(46, 204, 113, 0.85);
+  border: 1px solid #2ecc71;
+  color: #fff;
+}
+
+/* Sold Card Grayscale & Opacity */
+.car-card.is-sold::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 8, 22, 0.35);
+  pointer-events: none;
+  z-index: 2;
+  transition: background 0.3s;
+}
+
+.car-card.is-sold .car-card__image {
+  filter: grayscale(1) contrast(0.85);
+  opacity: 0.5;
+}
+
+.car-card.is-sold .price {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--muted);
+}
+
+.car-card.is-sold:not(.admin-mode) .select-btn {
+  opacity: 0.3;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+/* Card Admin Tools */
+.card-admin-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 12px;
+  margin-top: 12px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.14);
+}
+
+.card-admin-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.card-admin-actions button {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+}
+
+.admin-edit-btn {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.admin-edit-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.admin-delete-btn {
+  background: rgba(231, 76, 60, 0.15);
+  border: 1px solid rgba(231, 76, 60, 0.3);
+  color: #ff7675;
+}
+
+.admin-delete-btn:hover {
+  background: rgba(231, 76, 60, 0.3);
+  border-color: #ff7675;
+}
+
+.card-status-select {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.card-status-select:focus {
+  border-color: var(--accent);
+}
+
+
+.card-status-select option {
+  background-color: #3d4354;
+}
+
+.card-status-select option:hover {
+  cursor: pointer;
+}
+
+/* Reusable Modal Dialog */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 8, 22, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.is-active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-dialog {
+  width: 100%;
+  max-width: 660px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 28px;
+  border: 1px solid var(--border);
+  background: rgba(12, 20, 44, 0.94);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  transform: scale(0.9);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-overlay.is-active .modal-dialog {
+  transform: scale(1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 28px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #ffd1a6;
+}
+
+.modal-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 1.8rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.modal-close-btn:hover {
+  color: var(--text);
+}
+
+.modal-body {
+  padding: 24px 28px;
+  overflow-y: auto;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px 28px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Modal Form Inputs */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.form-group--full-width {
+  grid-column: span 2;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="password"],
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  font-size: 0.95rem;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--accent);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Toast Notifications */
+.toast-notification {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1010;
+  padding: 16px 24px;
+  border-radius: 16px;
+  background: rgba(11, 17, 36, 0.9);
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.toast-notification.is-active {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.toast-notification--success {
+  border-color: #2ecc71;
+  color: #2ecc71;
+}
+
+.toast-notification--info {
+  border-color: var(--accent);
+  color: #ffd1a6;
+}

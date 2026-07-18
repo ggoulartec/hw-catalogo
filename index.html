@@ -13,7 +13,28 @@
 
 <body>
   <div class="page-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Hot Wheels</p>
+        <h1>Catálogo de Colecionador</h1>
+        <p class="hero-text">Gerencie suas miniaturas, selecione os modelos desejados e gere listas para enviar via WhatsApp ou exportar para Excel.</p>
+      </div>
+      <div class="hero-actions-container">
+        <button id="adminToggleBtn" class="secondary-btn">⚙️ Painel Admin</button>
+      </div>
+    </header>
+
     <main>
+      <!-- Painel Admin Controles -->
+      <section id="adminBar" class="admin-bar" style="display: none;">
+        <h3 class="admin-bar__title">🛠️ Painel Admin</h3>
+        <div class="admin-bar__actions">
+          <button id="addCarBtn" class="primary-btn">➕ Adicionar Carrinho</button>
+          <button id="exportJsonBtn" class="secondary-btn">📥 Exportar Banco (JSON)</button>
+          <button id="resetDatabaseBtn" class="ghost-btn">🔄 Restaurar Padrão</button>
+        </div>
+      </section>
+
       <section class="selection-panel" aria-label="Seleção de Hot Wheels">
         <div class="selection-panel__header">
           <div>
@@ -60,12 +81,128 @@
     </main>
   </div>
 
+  <!-- Modal de Autenticação -->
+  <div id="loginModal" class="modal-overlay">
+    <div class="modal-dialog" style="max-width: 420px;">
+      <div class="modal-header">
+        <h3>Acesso Restrito</h3>
+        <button id="loginClose" class="modal-close-btn">&times;</button>
+      </div>
+      <form id="loginForm">
+        <div class="modal-body" style="padding: 24px 28px;">
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="loginPassword">Senha de Desenvolvedor *</label>
+            <input type="password" id="loginPassword" required placeholder="Digite a senha..." />
+          </div>
+          <p id="loginError" style="color: #ff7675; font-size: 0.85rem; margin-top: 10px; display: none; font-weight: 600;">Senha incorreta. Tente novamente.</p>
+        </div>
+        <div class="modal-footer" style="padding: 16px 28px;">
+          <button type="button" id="loginCancel" class="secondary-btn">Cancelar</button>
+          <button type="submit" class="primary-btn">Entrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal de Cadastro/Edição -->
+  <div id="carModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="modalTitle">Adicionar Novo Carrinho</h3>
+        <button id="modalClose" class="modal-close-btn">&times;</button>
+      </div>
+      <form id="carForm">
+        <div class="modal-body">
+          <input type="hidden" id="formCarId" />
+          <div class="form-grid">
+            <div class="form-group form-group--full-width">
+              <label for="formName">Nome do Modelo *</label>
+              <input type="text" id="formName" required placeholder="Ex: '66 Buick Riviera" />
+            </div>
+            <div class="form-group">
+              <label for="formPrice">Preço (R$) *</label>
+              <input type="number" id="formPrice" required min="0" step="0.01" placeholder="Ex: 12.00" />
+            </div>
+            <div class="form-group">
+              <label for="formStatus">Status *</label>
+              <select id="formStatus" required>
+                <option value="Disponível">Disponível</option>
+                <option value="Reservado">Reservado</option>
+                <option value="Vendido">Vendido</option>
+              </select>
+            </div>
+            <div class="form-group form-group--full-width">
+              <label for="formImage">Caminho da Imagem *</label>
+              <input type="text" id="formImage" required placeholder="Ex: img/img (55).JPEG ou img/premium_..._ad.png" />
+            </div>
+            <div class="form-group">
+              <label for="formReleaseYear">Ano de Lançamento</label>
+              <input type="text" id="formReleaseYear" placeholder="Ex: 2025" />
+            </div>
+            <div class="form-group">
+              <label for="formSegment">Segmento</label>
+              <input type="text" id="formSegment" placeholder="Ex: Hot Wheels / Premium" />
+            </div>
+            <div class="form-group">
+              <label for="formAssortment">Lote / Assortment</label>
+              <input type="text" id="formAssortment" placeholder="Ex: Mainline / Car Culture" />
+            </div>
+            <div class="form-group">
+              <label for="formSeries">Série</label>
+              <input type="text" id="formSeries" placeholder="Ex: HW Modified" />
+            </div>
+            <div class="form-group">
+              <label for="formBaseColor">Cor da Base</label>
+              <input type="text" id="formBaseColor" placeholder="Ex: Zamac / Chrome / Black" />
+            </div>
+            <div class="form-group">
+              <label for="formBodyColor">Cor da Carroceria</label>
+              <input type="text" id="formBodyColor" placeholder="Ex: Black / Candy Blue" />
+            </div>
+            <div class="form-group">
+              <label for="formWindowColor">Cor dos Vidros</label>
+              <input type="text" id="formWindowColor" placeholder="Ex: Smoke / Clear / Blue" />
+            </div>
+            <div class="form-group">
+              <label for="formInteriorColor">Cor do Interior</label>
+              <input type="text" id="formInteriorColor" placeholder="Ex: Black / Red / Chrome" />
+            </div>
+            <div class="form-group">
+              <label for="formBaseMaterial">Material da Base</label>
+              <input type="text" id="formBaseMaterial" placeholder="Ex: Plastic / Metal" />
+            </div>
+            <div class="form-group">
+              <label for="formScale">Escala</label>
+              <input type="text" id="formScale" value="1:64" placeholder="Ex: 1:64" />
+            </div>
+            <div class="form-group form-group--full-width">
+              <label for="formObservation">Observação</label>
+              <textarea id="formObservation" placeholder="Ex: Possui detalhes de desgaste / Edição especial"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="modalCancel" class="secondary-btn">Cancelar</button>
+          <button type="submit" class="primary-btn">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Container de Toast Notifications -->
+  <div id="toastNotification" class="toast-notification">
+    <span class="toast-icon">ℹ️</span>
+    <span id="toastMessage">Mensagem de feedback</span>
+  </div>
+
   <script>
     let cars = [];
     let filteredCars = [];
     let currentPage = 1;
     const itemsPerPage = 12;
     let searchFilter = '';
+    let selectedCars = [];
+    let adminMode = false;
 
     const catalog = document.getElementById('catalog');
     const searchInput = document.getElementById('searchInput');
@@ -79,7 +216,50 @@
     const clearSelectionBtn = document.getElementById('clearSelection');
     const selectAllPageBtn = document.getElementById('selectAllPage');
     const downloadImagesBtn = document.getElementById('downloadImagesBtn');
-    let selectedCars = [];
+
+    // Admin Elements
+    const adminToggleBtn = document.getElementById('adminToggleBtn');
+    const adminBar = document.getElementById('adminBar');
+    const addCarBtn = document.getElementById('addCarBtn');
+    const exportJsonBtn = document.getElementById('exportJsonBtn');
+    const resetDatabaseBtn = document.getElementById('resetDatabaseBtn');
+
+    // Modal Elements
+    const carModal = document.getElementById('carModal');
+    const carForm = document.getElementById('carForm');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalClose = document.getElementById('modalClose');
+    const modalCancel = document.getElementById('modalCancel');
+
+    // Login Modal Elements
+    const loginModal = document.getElementById('loginModal');
+    const loginForm = document.getElementById('loginForm');
+    const loginPassword = document.getElementById('loginPassword');
+    const loginError = document.getElementById('loginError');
+    const loginClose = document.getElementById('loginClose');
+    const loginCancel = document.getElementById('loginCancel');
+
+    // Form fields
+    const formCarId = document.getElementById('formCarId');
+    const formName = document.getElementById('formName');
+    const formPrice = document.getElementById('formPrice');
+    const formStatus = document.getElementById('formStatus');
+    const formImage = document.getElementById('formImage');
+    const formReleaseYear = document.getElementById('formReleaseYear');
+    const formSegment = document.getElementById('formSegment');
+    const formAssortment = document.getElementById('formAssortment');
+    const formSeries = document.getElementById('formSeries');
+    const formBaseColor = document.getElementById('formBaseColor');
+    const formBodyColor = document.getElementById('formBodyColor');
+    const formWindowColor = document.getElementById('formWindowColor');
+    const formInteriorColor = document.getElementById('formInteriorColor');
+    const formBaseMaterial = document.getElementById('formBaseMaterial');
+    const formScale = document.getElementById('formScale');
+    const formObservation = document.getElementById('formObservation');
+
+    // Toast elements
+    const toastNotification = document.getElementById('toastNotification');
+    const toastMessage = document.getElementById('toastMessage');
 
     const formatPrice = (value) => value.toLocaleString('pt-BR', {
       style: 'currency',
@@ -458,17 +638,65 @@
       pageCars.forEach((car) => {
         const card = document.createElement('article');
         card.className = 'car-card';
+        if (adminMode) {
+          card.classList.add('admin-mode');
+        }
+
+        // Apply status class
+        const status = car.status || 'Disponível';
+        if (status === 'Vendido') {
+          card.classList.add('is-sold');
+        } else if (status === 'Reservado') {
+          card.classList.add('is-reserved');
+        }
 
         const borderClass = getSpecialBorderClass(car);
         if (borderClass) {
           card.classList.add(borderClass);
         }
 
+        // Status Badge
+        let statusBadgeMarkup = '';
+        if (status === 'Vendido') {
+          statusBadgeMarkup = `<span class="status-badge status-badge--sold">Vendido</span>`;
+        } else if (status === 'Reservado') {
+          statusBadgeMarkup = `<span class="status-badge status-badge--reserved">Reservado</span>`;
+        } else if (adminMode) {
+          statusBadgeMarkup = `<span class="status-badge status-badge--available">Disponível</span>`;
+        }
+
         const badgeLabel = getSpecialBadgeLabel(car);
         const badgeClass = badgeLabel ? getSpecialBadgeClass(car) : '';
         const badgeMarkup = badgeLabel ? `<span class="special-badge ${badgeClass}">${badgeLabel}</span>` : '';
 
+        // Admin tools section
+        let adminToolsMarkup = '';
+        if (adminMode) {
+          adminToolsMarkup = `
+            <div class="card-admin-tools">
+              <select class="card-status-select" data-id="${car.id}">
+                <option value="Disponível" ${status === 'Disponível' ? 'selected' : ''}>Disponível</option>
+                <option value="Reservado" ${status === 'Reservado' ? 'selected' : ''}>Reservado</option>
+                <option value="Vendido" ${status === 'Vendido' ? 'selected' : ''}>Vendido</option>
+              </select>
+              <div class="card-admin-actions">
+                <button type="button" class="admin-edit-btn select-btn" data-id="${car.id}">Editar</button>
+                <button type="button" class="admin-delete-btn select-btn" data-id="${car.id}">Excluir</button>
+              </div>
+            </div>
+          `;
+        }
+
+        // Select button configuration
+        let selectBtnText = 'Selecionar';
+        let selectBtnDisabled = '';
+        if (status === 'Vendido' && !adminMode) {
+          selectBtnText = 'Indisponível';
+          selectBtnDisabled = 'disabled';
+        }
+
         card.innerHTML = `
+          ${statusBadgeMarkup}
           <div class="car-card__image" style="background-image: url('${car.image}');" role="img" aria-label="${car.name}"></div>
           <div class="card-body">
             <div class="card-top">
@@ -491,12 +719,13 @@
               <div><span>Base material</span><strong>${car.base_material}</strong></div>
             </div>
             <div class="card-actions">
-              <button class="select-btn" data-id="${car.id}">Selecionar</button>
+              <button class="select-btn" data-id="${car.id}" ${selectBtnDisabled}>${selectBtnText}</button>
               <button class="download-card-btn" data-id="${car.id}" title="Salvar card como imagem">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                 Salvar Card
               </button>
             </div>
+            ${adminToolsMarkup}
           </div>
         `;
         catalog.appendChild(card);
@@ -587,9 +816,23 @@
       const card = document.createElement('article');
       card.className = 'car-card';
 
+      const status = car.status || 'Disponível';
+      if (status === 'Vendido') {
+        card.classList.add('is-sold');
+      } else if (status === 'Reservado') {
+        card.classList.add('is-reserved');
+      }
+
       const borderClass = getSpecialBorderClass(car);
       if (borderClass) {
         card.classList.add(borderClass);
+      }
+
+      let statusBadgeMarkup = '';
+      if (status === 'Vendido') {
+        statusBadgeMarkup = `<span class="status-badge status-badge--sold">Vendido</span>`;
+      } else if (status === 'Reservado') {
+        statusBadgeMarkup = `<span class="status-badge status-badge--reserved">Reservado</span>`;
       }
 
       const badgeLabel = getSpecialBadgeLabel(car);
@@ -597,6 +840,7 @@
       const badgeMarkup = badgeLabel ? `<span class="special-badge ${badgeClass}">${badgeLabel}</span>` : '';
 
       card.innerHTML = `
+        ${statusBadgeMarkup}
         <div class="car-card__image" style="background-image: url('${car.image}');" role="img" aria-label="${car.name}"></div>
         <div class="card-body">
           <div class="card-top">
@@ -713,6 +957,220 @@
       }
     };
 
+    const showToast = (message, type = 'info') => {
+      toastMessage.textContent = message;
+      toastNotification.className = `toast-notification is-active toast-notification--${type}`;
+
+      const icons = {
+        success: '✅',
+        info: 'ℹ️',
+        error: '❌'
+      };
+      toastNotification.querySelector('.toast-icon').textContent = icons[type] || 'ℹ️';
+
+      setTimeout(() => {
+        toastNotification.classList.remove('is-active');
+      }, 4000);
+    };
+
+    const enterAdminMode = () => {
+      adminMode = true;
+      adminToggleBtn.classList.add('active');
+      adminBar.style.display = 'flex';
+      renderPage(currentPage);
+      updateCardSelectionState();
+      showToast('Modo Administrativo Ativado!', 'success');
+    };
+
+    const exitAdminMode = () => {
+      adminMode = false;
+      adminToggleBtn.classList.remove('active');
+      adminBar.style.display = 'none';
+      renderPage(currentPage);
+      updateCardSelectionState();
+      showToast('Modo Administrativo Desativado.', 'info');
+    };
+
+    const openLoginModal = () => {
+      loginForm.reset();
+      loginError.style.display = 'none';
+      loginModal.classList.add('is-active');
+      setTimeout(() => loginPassword.focus(), 100);
+    };
+
+    const closeLoginModal = () => {
+      loginModal.classList.remove('is-active');
+    };
+
+    const sha256 = async (string) => {
+      const utf8 = new TextEncoder().encode(string);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      return hashHex;
+    };
+
+    const toggleAdminMode = () => {
+      if (!adminMode) {
+        if (sessionStorage.getItem('hw_admin_authenticated') === 'true') {
+          enterAdminMode();
+        } else {
+          openLoginModal();
+        }
+      } else {
+        exitAdminMode();
+      }
+    };
+
+    adminToggleBtn.addEventListener('click', toggleAdminMode);
+    loginClose.addEventListener('click', closeLoginModal);
+    loginCancel.addEventListener('click', closeLoginModal);
+    loginModal.addEventListener('click', (e) => {
+      if (e.target === loginModal) closeLoginModal();
+    });
+
+    loginForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const enteredPassword = loginPassword.value;
+      const hash = await sha256(enteredPassword);
+
+      // Senha: dev123
+      if (hash === '87274af01876341455b32d805946f272871bb42effa6604dccf28bb027afa82b') {
+        sessionStorage.setItem('hw_admin_authenticated', 'true');
+        closeLoginModal();
+        enterAdminMode();
+      } else {
+        loginError.style.display = 'block';
+        loginPassword.value = '';
+        loginPassword.focus();
+      }
+    });
+
+    const exportDatabaseJson = () => {
+      // Strip out the runtime dynamic id field before exporting
+      const exportCars = cars.map(({ id, ...rest }) => rest);
+
+      const jsonString = JSON.stringify(exportCars, null, 2);
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'cars.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      showToast('Banco de dados baixado! Substitua o cars.json na pasta do projeto.', 'success');
+    };
+    exportJsonBtn.addEventListener('click', exportDatabaseJson);
+
+    const resetDatabase = async () => {
+      if (!confirm('Deseja realmente restaurar o banco de dados para os valores originais do arquivo cars.json? Todas as alterações locais serão perdidas.')) {
+        return;
+      }
+      try {
+        localStorage.removeItem('hw_catalog_database');
+        await init();
+        showToast('Banco de dados restaurado com sucesso!', 'success');
+      } catch (err) {
+        showToast('Erro ao restaurar o banco de dados.', 'error');
+      }
+    };
+    resetDatabaseBtn.addEventListener('click', resetDatabase);
+
+    const openModal = (title, carData = null) => {
+      modalTitle.textContent = title;
+      carForm.reset();
+
+      if (carData) {
+        formCarId.value = carData.id;
+        formName.value = carData.name || '';
+        formPrice.value = carData.price || '';
+        formStatus.value = carData.status || 'Disponível';
+        formImage.value = carData.image || '';
+        formReleaseYear.value = carData.release_year || '';
+        formSegment.value = carData.segment || '';
+        formAssortment.value = carData.assortment || '';
+        formSeries.value = carData.series || '';
+        formBaseColor.value = carData.base_color || '';
+        formBodyColor.value = carData.body_color || '';
+        formWindowColor.value = carData.window_color || '';
+        formInteriorColor.value = carData.interior_color || '';
+        formBaseMaterial.value = carData.base_material || '';
+        formScale.value = carData.scale || '1:64';
+        formObservation.value = carData.observation || '';
+      } else {
+        formCarId.value = '';
+        formStatus.value = 'Disponível';
+        formScale.value = '1:64';
+      }
+
+      carModal.classList.add('is-active');
+    };
+
+    const closeModal = () => {
+      carModal.classList.remove('is-active');
+    };
+
+    modalClose.addEventListener('click', closeModal);
+    modalCancel.addEventListener('click', closeModal);
+    carModal.addEventListener('click', (e) => {
+      if (e.target === carModal) closeModal();
+    });
+
+    addCarBtn.addEventListener('click', () => {
+      openModal('Adicionar Novo Carrinho');
+    });
+
+    carForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const carId = formCarId.value;
+      const carData = {
+        name: formName.value.trim(),
+        price: parseFloat(formPrice.value) || 0,
+        status: formStatus.value,
+        image: formImage.value.trim(),
+        release_year: formReleaseYear.value.trim(),
+        segment: formSegment.value.trim(),
+        assortment: formAssortment.value.trim(),
+        series: formSeries.value.trim(),
+        base_color: formBaseColor.value.trim(),
+        body_color: formBodyColor.value.trim(),
+        window_color: formWindowColor.value.trim(),
+        interior_color: formInteriorColor.value.trim(),
+        base_material: formBaseMaterial.value.trim(),
+        scale: formScale.value.trim(),
+        observation: formObservation.value.trim()
+      };
+
+      if (carId) {
+        // Edit Mode
+        const carIndex = cars.findIndex((c) => c.id === carId);
+        if (carIndex !== -1) {
+          cars[carIndex] = { ...cars[carIndex], ...carData };
+          showToast('Carrinho atualizado com sucesso!', 'success');
+        }
+      } else {
+        // Add Mode
+        cars.push(carData);
+        showToast('Carrinho adicionado ao catálogo!', 'success');
+      }
+
+      localStorage.setItem('hw_catalog_database', JSON.stringify(cars));
+
+      cars.forEach((car, index) => {
+        car.id = `car-${index}`;
+      });
+
+      filteredCars = [...cars];
+      applyFilter(searchInput.value);
+      populateDropdown();
+      closeModal();
+    });
+
     const toggleSelection = (car) => {
       const exists = selectedCars.some((item) => item.id === car.id);
       if (exists) {
@@ -728,17 +1186,31 @@
 
     const updateCardSelectionState = () => {
       document.querySelectorAll('.car-card').forEach((card) => {
-        const button = card.querySelector('.select-btn');
-        const carId = button?.dataset.id;
+        const button = card.querySelector('.select-btn:not(.admin-edit-btn):not(.admin-delete-btn)');
+        if (!button) return;
+
+        const carId = button.dataset.id;
+        const car = cars.find((item) => item.id === carId);
         const isSelected = selectedCars.some((item) => item.id === carId);
+
         card.classList.toggle('is-selected', isSelected);
-        button.textContent = isSelected ? 'Selecionado' : 'Selecionar';
+
+        if (car && car.status === 'Vendido' && !adminMode) {
+          button.textContent = 'Indisponível';
+        } else {
+          button.textContent = isSelected ? 'Selecionado' : 'Selecionar';
+        }
       });
     };
 
     carSelect.addEventListener('change', (event) => {
       const car = cars.find((item) => item.id === event.target.value);
       if (car) {
+        if (car.status === 'Vendido' && !adminMode) {
+          showToast('Modelos vendidos não podem ser selecionados.', 'error');
+          carSelect.value = '';
+          return;
+        }
         toggleSelection(car);
         const carIndex = cars.findIndex((item) => item.id === car.id);
         if (carIndex !== -1) {
@@ -751,9 +1223,58 @@
       }
     });
 
+    catalog.addEventListener('change', (event) => {
+      const statusSelect = event.target.closest('.card-status-select');
+      if (statusSelect) {
+        const carId = statusSelect.dataset.id;
+        const car = cars.find((c) => c.id === carId);
+        if (car) {
+          car.status = statusSelect.value;
+          localStorage.setItem('hw_catalog_database', JSON.stringify(cars));
+
+          if (car.status === 'Vendido') {
+            selectedCars = selectedCars.filter((item) => item.id !== car.id);
+            renderSelectedCars();
+          }
+
+          filteredCars = [...cars];
+          applyFilter(searchInput.value);
+          showToast(`Status de "${car.name}" atualizado para ${car.status}`, 'success');
+        }
+      }
+    });
+
     catalog.addEventListener('click', async (event) => {
       const selectBtn = event.target.closest('.select-btn');
       if (selectBtn) {
+        if (selectBtn.classList.contains('admin-edit-btn')) {
+          const car = cars.find((item) => item.id === selectBtn.dataset.id);
+          if (car) {
+            openModal('Editar Carrinho', car);
+          }
+          return;
+        }
+        if (selectBtn.classList.contains('admin-delete-btn')) {
+          const car = cars.find((item) => item.id === selectBtn.dataset.id);
+          if (car && confirm(`Deseja realmente excluir "${car.name}" do catálogo?`)) {
+            selectedCars = selectedCars.filter((item) => item.id !== car.id);
+            renderSelectedCars();
+
+            cars = cars.filter((item) => item.id !== car.id);
+            localStorage.setItem('hw_catalog_database', JSON.stringify(cars));
+
+            cars.forEach((c, index) => {
+              c.id = `car-${index}`;
+            });
+
+            filteredCars = [...cars];
+            applyFilter(searchInput.value);
+            populateDropdown();
+            showToast('Carrinho excluído do catálogo.', 'success');
+          }
+          return;
+        }
+
         const car = cars.find((item) => item.id === selectBtn.dataset.id);
         if (car) {
           toggleSelection(car);
@@ -782,7 +1303,8 @@
     });
 
     selectAllBtn.addEventListener('click', () => {
-      selectedCars = [...cars];
+      // Select all available or reserved cars, do not select sold ones unless in admin mode
+      selectedCars = cars.filter(car => adminMode || car.status !== 'Vendido');
       carSelect.value = '';
       renderSelectedCars();
       updateCardSelectionState();
@@ -801,8 +1323,10 @@
       const visibleCars = filteredCars.slice(startIndex, endIndex);
 
       visibleCars.forEach((car) => {
-        if (!selectedCars.some((item) => item.id === car.id)) {
-          selectedCars.push(car);
+        if (adminMode || car.status !== 'Vendido') {
+          if (!selectedCars.some((item) => item.id === car.id)) {
+            selectedCars.push(car);
+          }
         }
       });
 
@@ -818,12 +1342,22 @@
     const init = async () => {
       try {
         catalog.innerHTML = '<p class="empty-selection">Carregando catálogo...</p>';
-        const response = await fetch('cars.json');
-        if (!response.ok) {
-          throw new Error('Falha ao carregar o arquivo JSON.');
+        const storedDb = localStorage.getItem('hw_catalog_database');
+        if (storedDb) {
+          cars = JSON.parse(storedDb);
+        } else {
+          const response = await fetch('cars.json');
+          if (!response.ok) {
+            throw new Error('Falha ao carregar o arquivo JSON.');
+          }
+          const defaultCars = await response.json();
+          cars = defaultCars.map((car) => ({
+            ...car,
+            status: car.status || 'Disponível'
+          }));
+          localStorage.setItem('hw_catalog_database', JSON.stringify(cars));
         }
-        cars = await response.json();
-        // Atribuir IDs únicos baseados no índice para diferenciar duplicatas
+
         cars.forEach((car, index) => {
           car.id = `car-${index}`;
         });
