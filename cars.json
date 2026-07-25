@@ -352,22 +352,6 @@
     "observation": ""
   },
   {
-    "name": "Audi 90 Quattro",
-    "price": 12,
-    "image": "img/premium_audi_ad.png",
-    "release_year": "2025",
-    "segment": "Hot Wheels",
-    "assortment": "Mainline",
-    "series": "Peak Pursuit (2025)",
-    "base_color": "-",
-    "body_color": "gray",
-    "window_color": "-",
-    "interior_color": "Black",
-    "base_material": "Plastic",
-    "scale": "1:64",
-    "observation": ""
-  },
-  {
     "name": "Mercedes-Bens 500 E",
     "price": 12,
     "image": "img/premium_mercedes_ad.png",
