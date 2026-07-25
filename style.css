@@ -378,6 +378,11 @@ button:disabled {
   box-shadow: 0 0 0 1px rgba(255, 122, 0, 0.45), 0 28px 55px rgba(0, 0, 0, 0.32);
 }
 
+.car-card.dark_pink-border {
+  border-color: #ff0077;
+  box-shadow: 0 0 0 1px rgba(255, 0, 119, 0.45), 0 28px 55px rgba(0, 0, 0, 0.32);
+}
+
 .car-card.is-selected {
   border-color: #ff7a00;
   box-shadow: 0 0 0 2px rgba(255, 122, 0, 0.35), 0 28px 55px rgba(0, 0, 0, 0.32);
@@ -415,6 +420,12 @@ button:disabled {
   background: rgba(255, 122, 0, 0.18);
   border-color: rgba(255, 122, 0, 0.35);
   color: #ff0000;
+}
+
+.special-badge.dark_pink-badge {
+  background: rgba(255, 0, 128, 0.18);
+  border-color: rgba(255, 0, 128, 0.35);
+  color: #ff0077;
 }
 
 .car-card img,

@@ -273,6 +273,7 @@
       const assortment = String(car.assortment || '').toLowerCase();
       const isSilverSeries = segment.includes('silver series');
       const isPremiumSeries = segment.includes('premium');
+      const isLegendsSeries = assortment.includes('legends tour');
       const is100PercentSeries = assortment.includes('100%');
       const isTreasureHuntSeries = /treasure hunts?/i.test(series);
       const isTreasureHuntRarity = rarity.includes('treasure hunt') || rarity.includes('chase');
@@ -280,6 +281,7 @@
       if (isSilverSeries || isTreasureHuntRarity) return 'silver-border';
       if (isPremiumSeries || isTreasureHuntSeries) return 'gold-border';
       if (is100PercentSeries) return 'red-border';
+      if (isLegendsSeries) return 'dark_pink-border';
       return '';
     };
 
@@ -291,6 +293,7 @@
 
       if (segment.includes('silver series')) return 'Silver Series';
       if (segment.includes('premium')) return 'Premium';
+      if (assortment.includes('legends tour')) return 'Legends Tour';
       if (assortment.includes('100%')) return '100%';
       if (rarity.toLowerCase().includes('treasure hunt')) return 'Treasure Hunt';
       if (rarity.toLowerCase().includes('chase')) return 'Chase';
@@ -307,6 +310,7 @@
       if (segment.includes('premium')) return 'gold-badge';
       if (segment.includes('silver series') || rarity.includes('treasure hunt') || rarity.includes('chase')) return 'silver-badge';
       if (assortment.includes('100%')) return 'red-badge';
+      if (assortment.includes('legends tour')) return 'dark_pink-badge'
       return 'default-badge';
     };
 
@@ -735,7 +739,7 @@
       renderPagination(totalPages);
     };
 
-    const applyFilter = (searchTerm) => {
+    const applyFilter = (searchTerm, targetCarId = null) => {
       searchFilter = searchTerm.toLowerCase().trim();
       if (searchFilter) {
         filteredCars = cars.filter((car) =>
@@ -746,7 +750,16 @@
         filteredCars = [...cars];
         clearFilterBtn.style.display = 'none';
       }
-      currentPage = 1;
+
+      let pageToRender = 1;
+      if (targetCarId) {
+        const targetIndex = filteredCars.findIndex((car) => car.id === targetCarId);
+        if (targetIndex !== -1) {
+          pageToRender = Math.floor(targetIndex / itemsPerPage) + 1;
+        }
+      }
+
+      currentPage = pageToRender;
       renderPage(currentPage);
       updateCardSelectionState();
     };
@@ -1146,28 +1159,34 @@
         observation: formObservation.value.trim()
       };
 
+      let newCarIndex = -1;
+
       if (carId) {
         // Edit Mode
         const carIndex = cars.findIndex((c) => c.id === carId);
         if (carIndex !== -1) {
           cars[carIndex] = { ...cars[carIndex], ...carData };
+          newCarIndex = carIndex;
           showToast('Carrinho atualizado com sucesso!', 'success');
         }
       } else {
         // Add Mode
         cars.push(carData);
+        newCarIndex = cars.length - 1;
         showToast('Carrinho adicionado ao catálogo!', 'success');
       }
 
-      localStorage.setItem('hw_catalog_database', JSON.stringify(cars));
-
+      // Regenerate IDs based on array position
       cars.forEach((car, index) => {
         car.id = `car-${index}`;
       });
 
-      filteredCars = [...cars];
-      applyFilter(searchInput.value);
+      localStorage.setItem('hw_catalog_database', JSON.stringify(cars));
       populateDropdown();
+      
+      // Navigate to the page of the newly added/edited car
+      const newCarId = cars[newCarIndex]?.id;
+      applyFilter(searchInput.value, newCarId);
       closeModal();
     });
 
@@ -1339,23 +1358,43 @@
       downloadSelectedCardsAsImages();
     });
 
+    const generateHash = (str) => {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash; // Convert to 32-bit integer
+      }
+      return hash.toString(36);
+    };
+
     const init = async () => {
       try {
         catalog.innerHTML = '<p class="empty-selection">Carregando catálogo...</p>';
+        
+        // Always fetch the latest cars.json to check for updates
+        const response = await fetch('cars.json');
+        if (!response.ok) {
+          throw new Error('Falha ao carregar o arquivo JSON.');
+        }
+        const jsonText = await response.text();
+        const currentHash = generateHash(jsonText);
+        const storedHash = localStorage.getItem('hw_catalog_hash');
+        
+        const defaultCars = JSON.parse(jsonText);
         const storedDb = localStorage.getItem('hw_catalog_database');
-        if (storedDb) {
+        
+        // Use stored data only if hash matches (no updates to cars.json)
+        if (storedDb && storedHash === currentHash) {
           cars = JSON.parse(storedDb);
         } else {
-          const response = await fetch('cars.json');
-          if (!response.ok) {
-            throw new Error('Falha ao carregar o arquivo JSON.');
-          }
-          const defaultCars = await response.json();
+          // Load from file and update cache
           cars = defaultCars.map((car) => ({
             ...car,
             status: car.status || 'Disponível'
           }));
           localStorage.setItem('hw_catalog_database', JSON.stringify(cars));
+          localStorage.setItem('hw_catalog_hash', currentHash);
         }
 
         cars.forEach((car, index) => {
