@@ -65,7 +65,7 @@
   },
   {
     "name": "Ford Focus",
-    "price": 150,
+    "price": 120,
     "image": "img/premium_focus_ad.png",
     "release_year": "2002",
     "segment": "Archives",
@@ -113,7 +113,7 @@
   },
   {
     "name": "Deuce Roadster",
-    "price": 20,
+    "price": 15,
     "image": "img/premium_deuce_ad.png",
     "release_year": "2002",
     "segment": "Archives",
@@ -305,7 +305,7 @@
   },
   {
     "name": "'87 Buick Regal GNX",
-    "price": 20,
+    "price": 15,
     "image": "img/premium_buick_ad.png",
     "release_year": "2025",
     "segment": "Silver Series",
@@ -331,22 +331,6 @@
     "body_color": "purple",
     "window_color": "-",
     "interior_color": "Orange",
-    "base_material": "Plastic",
-    "scale": "1:64",
-    "observation": ""
-  },
-  {
-    "name": "Mercedes-Bens 500 E",
-    "price": 12,
-    "image": "img/premium_mercedes_ad.png",
-    "release_year": "2025",
-    "segment": "Hot Wheels",
-    "assortment": "Mainline",
-    "series": "HW: '70s Vs. '90s (2025)",
-    "base_color": "Black",
-    "body_color": "Green",
-    "window_color": "-",
-    "interior_color": "Dark Gray",
     "base_material": "Plastic",
     "scale": "1:64",
     "observation": ""
@@ -433,7 +417,7 @@
   },
   {
     "name": "Automobili Pininfarina Battista",
-    "price": 40,
+    "price": 35,
     "image": "img/premium_battista_ad.png",
     "release_year": "2025",
     "segment": "Premium",
@@ -481,7 +465,7 @@
   },
   {
     "name": "Renault Espace F1",
-    "price": 12,
+    "price": 10,
     "image": "img/img (60).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -497,7 +481,7 @@
   },
   {
     "name": "Dimachinni Veloce",
-    "price": 15,
+    "price": 12,
     "image": "img/img (61).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -513,7 +497,7 @@
   },
   {
     "name": "Maserati Shamal",
-    "price": 12,
+    "price": 10,
     "image": "img/img (62).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -642,7 +626,7 @@
   },
   {
     "name": "'62 Ford Mustang Concept",
-    "price": 10,
+    "price": 5,
     "image": "img/img (95).JPEG",
     "release_year": "2010",
     "segment": "Hot Wheels",
@@ -770,7 +754,7 @@
   },
   {
     "name": "Hako Type D",
-    "price": 10,
+    "price": 5,
     "image": "img/img (106).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -786,7 +770,7 @@
   },
   {
     "name": "Lotus Cortina",
-    "price": 12,
+    "price": 10,
     "image": "img/img (107).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -849,6 +833,22 @@
     "observation": ""
   },
   {
+    "name": "Mercedes-Bens 500 E",
+    "price": 12,
+    "image": "img/premium_mercedes_ad.png",
+    "release_year": "2025",
+    "segment": "Hot Wheels",
+    "assortment": "Mainline",
+    "series": "HW: '70s Vs. '90s (2025)",
+    "base_color": "Black",
+    "body_color": "Green",
+    "window_color": "-",
+    "interior_color": "Dark Gray",
+    "base_material": "Plastic",
+    "scale": "1:64",
+    "observation": ""
+  },
+  {
     "name": "DMC Deloeran",
     "price": 12,
     "image": "img/img (116).JPEG",
@@ -898,7 +898,7 @@
   },
   {
     "name": "Jaguar MK1",
-    "price": 12,
+    "price": 10,
     "image": "img/img (121).JPEG",
     "release_year": "2025",
     "segment": "Hot Wheels",
@@ -1042,7 +1042,7 @@
   },
   {
     "name": "Kool Kombi",
-    "price": 200,
+    "price": 250,
     "image": "img/image (24).jpeg",
     "release_year": "2024",
     "segment": "Events",
@@ -1106,7 +1106,7 @@
   },
   {
     "name": "'69 Ford Torino Talladega",
-    "price": 80,
+    "price": 70,
     "image": "img/image (5).jpeg",
     "release_year": "2013",
     "segment": "Hot Wheels",
@@ -1122,7 +1122,7 @@
   },
   {
     "name": "'69 Ford Torino Talladega",
-    "price": 80,
+    "price": 70,
     "image": "img/image (6).jpeg",
     "release_year": "2012",
     "segment": "Hot Wheels",
@@ -1267,7 +1267,7 @@
   {
     "name": "'11 Dodge Charger R/T",
     "price": 20,
-    "image": "img/image (26).jpeg",
+    "image": "img/image (27).jpeg",
     "release_year": "2014",
     "segment": "Hot Wheels",
     "assortment": "5-Packs",
