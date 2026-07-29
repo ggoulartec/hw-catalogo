@@ -993,6 +993,22 @@
     "observation": ""
   },
   {
+    "name": "Kool Kombi",
+    "price": 80,
+    "image": "img/image (23).jpeg",
+    "release_year": "2024",
+    "segment": "Premium",
+    "assortment": "Pop Culture",
+    "series": "2024 Pop Culture Mix 1",
+    "base_color": "White",
+    "body_color": "White & Turquoise",
+    "window_color": "Yellow",
+    "interior_color": "Pink",
+    "base_material": "Metal",
+    "scale": "1:64",
+    "observation": ""
+  },
+  {
     "name": "Bounce'n Bass",
     "price": 15,
     "image": "img/image (4).jpeg",
@@ -1010,7 +1026,7 @@
   },
   {
     "name": "'69 Ford Torino Talladega",
-    "price": 70,
+    "price": 60,
     "image": "img/image (5).jpeg",
     "release_year": "2013",
     "segment": "Hot Wheels",
@@ -1026,7 +1042,7 @@
   },
   {
     "name": "'69 Ford Torino Talladega",
-    "price": 70,
+    "price": 60,
     "image": "img/image (6).jpeg",
     "release_year": "2012",
     "segment": "Hot Wheels",
