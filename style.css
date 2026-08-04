@@ -398,7 +398,7 @@ button:disabled {
   background: rgba(255, 255, 255, 0.12);
   border: 1px solid rgba(255, 255, 255, 0.14);
   color: #f5f5f5;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.14em;
@@ -419,7 +419,7 @@ button:disabled {
 .special-badge.red-badge {
   background: rgba(255, 122, 0, 0.18);
   border-color: rgba(255, 122, 0, 0.35);
-  color: #ff0000;
+  color: #ff4f4f;
 }
 
 .special-badge.dark_pink-badge {
@@ -455,7 +455,7 @@ button:disabled {
 .card-category {
   margin: 0 0 4px;
   color: var(--accent);
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.18em;
@@ -463,7 +463,39 @@ button:disabled {
 
 .card-top h3 {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1rem;
+}
+
+.price-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+}
+
+.original-price-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.original-price {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: line-through;
+  font-weight: 600;
+}
+
+.discount-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #ffffff;
+  background: #e74c3c;
+  padding: 2px 6px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 6px rgba(231, 76, 60, 0.4);
 }
 
 .price {
@@ -474,6 +506,13 @@ button:disabled {
   color: #ffd1a6;
   font-weight: 700;
   white-space: nowrap;
+}
+
+.price--promo {
+  background: linear-gradient(135deg, rgba(231, 76, 60, 0.28), rgba(243, 156, 18, 0.28));
+  color: #ff6b6b;
+  border: 1px solid rgba(231, 76, 60, 0.5);
+  box-shadow: 0 0 10px rgba(231, 76, 60, 0.25);
 }
 
 .spec-grid {
@@ -492,7 +531,7 @@ button:disabled {
 
 .spec-grid span {
   display: block;
-  font-size: 0.72rem;
+  font-size: 0.55rem;
   color: var(--muted);
   margin-bottom: 4px;
   text-transform: uppercase;
@@ -500,8 +539,9 @@ button:disabled {
 }
 
 .spec-grid strong {
-  font-size: 0.95rem;
+  font-size: 0.75rem;
   font-weight: 600;
+  word-break: break-word;
 }
 
 /* Pagination Controls */

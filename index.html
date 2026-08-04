@@ -102,10 +102,31 @@
     const toastNotification = document.getElementById('toastNotification');
     const toastMessage = document.getElementById('toastMessage');
 
-    const formatPrice = (value) => value.toLocaleString('pt-BR', {
+    const formatPrice = (value) => Number(value || 0).toLocaleString('pt-BR', {
       style: 'currency',
       currency: 'BRL'
     });
+
+    const renderPriceMarkup = (car) => {
+      const price = Number(car.price) || 0;
+      const originalPrice = car.original_price ? Number(car.original_price) : 0;
+      const hasDiscount = originalPrice > price;
+
+      if (hasDiscount) {
+        const discountPercent = Math.round(((originalPrice - price) / originalPrice) * 100);
+        return `
+          <div class="price-box">
+            <div class="original-price-row">
+              <span class="original-price">${formatPrice(originalPrice)}</span>
+              <span class="discount-badge">-${discountPercent}%</span>
+            </div>
+            <span class="price price--promo">${formatPrice(price)}</span>
+          </div>
+        `;
+      }
+
+      return `<span class="price">${formatPrice(price)}</span>`;
+    };
 
     const getSpecialBorderClass = (car) => {
       const segment = String(car.segment || '').toLowerCase();
@@ -156,19 +177,23 @@
     };
 
     const buildCarText = (car) => {
+      const priceStr = car.original_price && Number(car.original_price) > Number(car.price)
+        ? `${formatPrice(car.price)} (De: ${formatPrice(car.original_price)}) [PROMO]`
+        : formatPrice(car.price);
+
       return [
         `Hot Wheels: ${car.name}`,
-        `Preço: ${formatPrice(car.price)}`,
-        `Release year: ${car.release_year}`,
-        `Segment: ${car.segment}`,
-        `Assortment: ${car.assortment}`,
-        `Series: ${car.series}`,
-        `Base color: ${car.base_color}`,
-        `Body color: ${car.body_color}`,
-        `Window color: ${car.window_color}`,
-        `Interior color: ${car.interior_color}`,
-        `Base material: ${car.base_material}`,
-        `Scale: ${car.scale}`
+        `Preço: ${priceStr}`,
+        `Lançamento: ${car.release_year}`,
+        `Categoria: ${car.assortment}`,
+        `Série: ${car.series}`,
+        `Escala: ${car.scale}`,
+        `Cor da base: ${car.base_color}`,
+        `Cor da carroceria: ${car.body_color}`,
+        `Cor das janelas: ${car.window_color}`,
+        `Cor do interior: ${car.interior_color}`,
+        `Material da base: ${car.base_material}`,
+        `Observação: ${car.observation || '-'}`
       ].join('\n');
     };
 
@@ -526,19 +551,20 @@
                 <p class="card-category">${car.segment}</p>
                 <h3>${car.name}</h3>
               </div>
-              <span class="price">${formatPrice(car.price)}</span>
+              ${renderPriceMarkup(car)}
             </div>
             ${badgeMarkup}
             <div class="spec-grid">
-              <div><span>Release</span><strong>${car.release_year}</strong></div>
-              <div><span>Assortment</span><strong>${car.assortment}</strong></div>
-              <div><span>Series</span><strong>${car.series}</strong></div>
-              <div><span>Scale</span><strong>${car.scale}</strong></div>
-              <div><span>Base color</span><strong>${car.base_color}</strong></div>
-              <div><span>Body color</span><strong>${car.body_color}</strong></div>
-              <div><span>Window color</span><strong>${car.window_color}</strong></div>
-              <div><span>Interior color</span><strong>${car.interior_color}</strong></div>
-              <div><span>Base material</span><strong>${car.base_material}</strong></div>
+              <div><span>Lançamento</span><strong>${car.release_year}</strong></div>
+              <div><span>Categoria</span><strong>${car.assortment}</strong></div>
+              <div><span>Série</span><strong>${car.series}</strong></div>
+              <div><span>Escala</span><strong>${car.scale}</strong></div>
+              <div><span>Cor da base</span><strong>${car.base_color}</strong></div>
+              <div><span>Cor da carroceria</span><strong>${car.body_color}</strong></div>
+              <div><span>Cor das janelas</span><strong>${car.window_color}</strong></div>
+              <div><span>Cor do interior</span><strong>${car.interior_color}</strong></div>
+              <div><span>Material da base</span><strong>${car.base_material}</strong></div>
+              <div><span>Observação</span><strong>${car.observation || '-'}</strong></div>
             </div>
             <div class="card-actions">
               <button class="select-btn" data-id="${car.id}" ${selectBtnDisabled}>${selectBtnText}</button>
@@ -678,19 +704,20 @@
               <p class="card-category">${car.segment}</p>
               <h3>${car.name}</h3>
             </div>
-            <span class="price">${formatPrice(car.price)}</span>
+            ${renderPriceMarkup(car)}
           </div>
           ${badgeMarkup}
           <div class="spec-grid">
-            <div><span>Release</span><strong>${car.release_year}</strong></div>
-            <div><span>Assortment</span><strong>${car.assortment}</strong></div>
-            <div><span>Series</span><strong>${car.series}</strong></div>
-            <div><span>Scale</span><strong>${car.scale}</strong></div>
-            <div><span>Base color</span><strong>${car.base_color}</strong></div>
-            <div><span>Body color</span><strong>${car.body_color}</strong></div>
-            <div><span>Window color</span><strong>${car.window_color}</strong></div>
-            <div><span>Interior color</span><strong>${car.interior_color}</strong></div>
-            <div><span>Base material</span><strong>${car.base_material}</strong></div>
+            <div><span>Lançamento</span><strong>${car.release_year}</strong></div>
+            <div><span>Categoria</span><strong>${car.assortment}</strong></div>
+            <div><span>Série</span><strong>${car.series}</strong></div>
+            <div><span>Escala</span><strong>${car.scale}</strong></div>
+            <div><span>Cor da base</span><strong>${car.base_color}</strong></div>
+            <div><span>Cor da carroceria</span><strong>${car.body_color}</strong></div>
+            <div><span>Cor das janelas</span><strong>${car.window_color}</strong></div>
+            <div><span>Cor do interior</span><strong>${car.interior_color}</strong></div>
+            <div><span>Material da base</span><strong>${car.base_material}</strong></div>
+            <div><span>Observação</span><strong>${car.observation || '-'}</strong></div>
           </div>
         </div>
       `;
