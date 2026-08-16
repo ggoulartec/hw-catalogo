@@ -1,0 +1,20 @@
+{
+  "name": "Hot Wheels | Catálogo de Colecionador",
+  "short_name": "HW Catálogo",
+  "description": "Gerenciador, cadastro e catálogo 100% offline de miniaturas Hot Wheels",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#040816",
+  "theme_color": "#ff7a00",
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["lifestyle", "shopping", "utilities"]
+}

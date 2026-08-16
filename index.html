@@ -4,25 +4,54 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hot Wheels | Catálogo de Vendas</title>
+  <meta name="theme-color" content="#040816" />
+  <meta name="description" content="Gerenciador, cadastro e catálogo 100% offline de miniaturas Hot Wheels." />
+  
+  <title>Hot Wheels | Catálogo de Colecionador</title>
+  
+  <!-- Ícone e Manifesto PWA -->
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg" />
+  <link rel="apple-touch-icon" href="icons/icon.svg" />
+  <link rel="manifest" href="manifest.json" />
+
   <link rel="stylesheet" href="style.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.3/xlsx.full.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  
+  <!-- Dependências Locais (100% Offline) -->
+  <script src="libs/xlsx.full.min.js"></script>
+  <script src="libs/html2canvas.min.js"></script>
+  <script src="libs/jszip.min.js"></script>
+  <script src="js/db.js"></script>
 </head>
 
 <body>
   <div class="page-shell">
     <header class="hero">
-      <div>
+      <div class="hero-content">
         <p class="eyebrow">Hot Wheels</p>
         <h1>Catálogo de Colecionador</h1>
-        <p class="hero-text">Gerencie suas miniaturas, selecione os modelos desejados e gere listas para enviar via WhatsApp ou exportar para Excel.</p>
+        <p class="hero-text">Gerencie suas miniaturas, cadastre novos modelos, edite informações e gere listas para enviar via WhatsApp ou exportar para Excel.</p>
+      </div>
+      <div class="hero-actions-container">
+        <div class="hero-btn-group">
+          <button id="pwaInstallBtn" class="pwa-install-btn" style="display: none;">
+            <span>📲</span> Instalar App
+          </button>
+          <button id="openBackupModalBtn" class="secondary-btn">
+            <span>💾</span> Gerenciar Dados
+          </button>
+          <button id="openCreateModalBtn" class="cta-create-btn">
+            <span>➕</span> Cadastrar Miniatura
+          </button>
+        </div>
+        <div class="hero-stats-row">
+          <span class="stat-pill">Total: <strong id="statTotal">0</strong></span>
+          <span class="stat-pill">Disponíveis: <strong id="statAvailable">0</strong></span>
+          <span class="stat-pill">Vendidos: <strong id="statSold">0</strong></span>
+        </div>
       </div>
     </header>
 
     <main>
-
       <section class="selection-panel" aria-label="Seleção de Hot Wheels">
         <div class="selection-panel__header">
           <div>
@@ -69,7 +98,210 @@
     </main>
   </div>
 
+  <!-- ==========================================
+       MODAL DE CADASTRO E EDIÇÃO DE MINIATURA (CRUD)
+       ========================================== -->
+  <div id="carModal" class="modal-overlay" aria-hidden="true" role="dialog">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <h3 id="carModalTitle">Cadastrar Miniatura</h3>
+          <p id="carModalSubtitle">Preencha as informações técnicas e anexe a foto da miniatura.</p>
+        </div>
+        <button id="closeCarModalBtn" class="modal-close-btn" aria-label="Fechar">&times;</button>
+      </div>
 
+      <form id="carForm" class="modal-body">
+        <input type="hidden" id="formCarId" />
+
+        <!-- Foto da Miniatura -->
+        <div>
+          <div class="form-section-title">Foto da Miniatura</div>
+          <div class="image-upload-wrapper">
+            <div id="imagePreviewBox" class="image-preview-box">
+              <span id="imagePreviewPlaceholder">Sem Imagem</span>
+            </div>
+            <div class="image-upload-controls">
+              <label class="file-input-label">
+                <span>📁 Escolher Foto do Computador</span>
+                <input type="file" id="formImageFile" accept="image/*" />
+              </label>
+              <div class="form-group">
+                <input type="text" id="formImageUrl" placeholder="Ou digite o caminho/link da imagem (ex: img/1 (1).jpeg)..." />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Informações Principais -->
+        <div>
+          <div class="form-section-title">Informações Principais</div>
+          <div class="form-grid-3">
+            <div class="form-group" style="grid-column: span 2;">
+              <label for="formName">Nome do Modelo *</label>
+              <input type="text" id="formName" placeholder="Ex: Nissan Skyline GT-R (R34)" required />
+            </div>
+            <div class="form-group">
+              <label for="formStatus">Status *</label>
+              <select id="formStatus">
+                <option value="Disponível">Disponível</option>
+                <option value="Reservado">Reservado</option>
+                <option value="Vendido">Vendido</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="formPrice">Preço de Venda (R$) *</label>
+              <input type="number" id="formPrice" step="0.50" min="0" placeholder="Ex: 45.00" required />
+            </div>
+            <div class="form-group">
+              <label for="formOriginalPrice">Preço Original (R$) <small style="opacity: 0.7;">(para promoção)</small></label>
+              <input type="number" id="formOriginalPrice" step="0.50" min="0" placeholder="Ex: 60.00" />
+            </div>
+            <div class="form-group">
+              <label for="formReleaseYear">Ano de Lançamento</label>
+              <input type="text" id="formReleaseYear" placeholder="Ex: 2026" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Coleção & Categorias -->
+        <div>
+          <div class="form-section-title">Coleção & Série</div>
+          <div class="form-grid-3">
+            <div class="form-group">
+              <label for="formSegment">Segmento</label>
+              <input type="text" id="formSegment" placeholder="Ex: Mainline, Premium, Silver Series" />
+            </div>
+            <div class="form-group">
+              <label for="formAssortment">Categoria / Assortment</label>
+              <input type="text" id="formAssortment" placeholder="Ex: Car Culture, Themed Multi-Packs" />
+            </div>
+            <div class="form-group">
+              <label for="formSeries">Série</label>
+              <input type="text" id="formSeries" placeholder="Ex: Japanese Car Culture, HW Exotics" />
+            </div>
+            <div class="form-group">
+              <label for="formRarity">Raridade / Especial</label>
+              <input type="text" id="formRarity" placeholder="Ex: Treasure Hunt, Super TH, Chase" />
+            </div>
+            <div class="form-group">
+              <label for="formScale">Escala</label>
+              <input type="text" id="formScale" value="1:64" placeholder="Ex: 1:64" />
+            </div>
+            <div class="form-group">
+              <label for="formBaseMaterial">Material da Base</label>
+              <input type="text" id="formBaseMaterial" placeholder="Ex: Metal, Plástico" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Cores e Detalhes -->
+        <div>
+          <div class="form-section-title">Cores & Acabamentos</div>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="formBodyColor">Cor da Carroceria</label>
+              <input type="text" id="formBodyColor" placeholder="Ex: Bayside Blue, Metalflake Black" />
+            </div>
+            <div class="form-group">
+              <label for="formBaseColor">Cor da Base</label>
+              <input type="text" id="formBaseColor" placeholder="Ex: Black, Chrome" />
+            </div>
+            <div class="form-group">
+              <label for="formWindowColor">Cor das Janelas</label>
+              <input type="text" id="formWindowColor" placeholder="Ex: Smoke, Clear, Tinted" />
+            </div>
+            <div class="form-group">
+              <label for="formInteriorColor">Cor do Interior</label>
+              <input type="text" id="formInteriorColor" placeholder="Ex: Black, Red" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Observações -->
+        <div>
+          <div class="form-section-title">Observações</div>
+          <div class="form-group">
+            <textarea id="formObservation" rows="2" placeholder="Informações adicionais, estado da embalagem/blister, etc."></textarea>
+          </div>
+        </div>
+      </form>
+
+      <div class="modal-footer">
+        <button type="button" id="cancelCarModalBtn" class="ghost-btn">Cancelar</button>
+        <button type="submit" form="carForm" id="saveCarBtn" class="primary-btn">Salvar Miniatura</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL DE GERENCIAMENTO DE DADOS (BACKUP)
+       ========================================== -->
+  <div id="backupModal" class="modal-overlay" aria-hidden="true" role="dialog">
+    <div class="modal-card modal-card--small">
+      <div class="modal-header">
+        <div>
+          <h3>Gerenciar Dados & Backup</h3>
+          <p>Exporte ou importe seus dados para segurança offline.</p>
+        </div>
+        <button id="closeBackupModalBtn" class="modal-close-btn" aria-label="Fechar">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="backup-card">
+          <div>
+            <h4>Exportar Backup</h4>
+            <p>Baixe todas as miniaturas cadastradas e fotos em um arquivo JSON de segurança.</p>
+          </div>
+          <button id="exportBackupBtn" class="primary-btn">Exportar (.json)</button>
+        </div>
+
+        <div class="backup-card">
+          <div>
+            <h4>Importar Backup</h4>
+            <p>Restaure seus dados a partir de um arquivo de backup previamente exportado.</p>
+          </div>
+          <label class="secondary-btn" style="cursor: pointer;">
+            <span>Selecionar Arquivo</span>
+            <input type="file" id="importBackupFileInput" accept=".json" style="display: none;" />
+          </label>
+        </div>
+
+        <div class="backup-card danger-zone">
+          <div>
+            <h4 style="color: #ff7675;">Zerar / Limpar Catálogo</h4>
+            <p>Remove todas as miniaturas salvas localmente, deixando o catálogo limpo para novos cadastros.</p>
+          </div>
+          <button id="clearDatabaseBtn" class="danger-btn">Zerar Catálogo</button>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="dismissBackupModalBtn" class="ghost-btn">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL DE CONFIRMAÇÃO DE EXCLUSÃO
+       ========================================== -->
+  <div id="confirmModal" class="modal-overlay" aria-hidden="true" role="dialog">
+    <div class="modal-card modal-card--small">
+      <div class="modal-header">
+        <div>
+          <h3 id="confirmModalTitle">Confirmação</h3>
+        </div>
+        <button id="closeConfirmModalBtn" class="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p id="confirmModalMessage">Tem certeza que deseja executar esta ação?</p>
+      </div>
+      <div class="modal-footer">
+        <button id="cancelConfirmBtn" class="ghost-btn">Cancelar</button>
+        <button id="actionConfirmBtn" class="danger-btn">Confirmar</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Container de Toast Notifications -->
   <div id="toastNotification" class="toast-notification">
@@ -77,14 +309,22 @@
     <span id="toastMessage">Mensagem de feedback</span>
   </div>
 
+  <!-- ==========================================
+       LÓGICA JAVASCRIPT DA APLICAÇÃO (OFFLINE)
+       ========================================== -->
   <script>
+    // Estado da Aplicação
     let cars = [];
     let filteredCars = [];
     let currentPage = 1;
     const itemsPerPage = 12;
     let searchFilter = '';
     let selectedCars = [];
+    let deferredPrompt = null;
+    let confirmCallback = null;
+    let currentCompressedImage = '';
 
+    // Elementos DOM Principais
     const catalog = document.getElementById('catalog');
     const searchInput = document.getElementById('searchInput');
     const clearFilterBtn = document.getElementById('clearFilter');
@@ -98,14 +338,72 @@
     const selectAllPageBtn = document.getElementById('selectAllPage');
     const downloadImagesBtn = document.getElementById('downloadImagesBtn');
 
+    // Stats Elements
+    const statTotal = document.getElementById('statTotal');
+    const statAvailable = document.getElementById('statAvailable');
+    const statSold = document.getElementById('statSold');
+
+    // PWA & Backup Modals Elements
+    const pwaInstallBtn = document.getElementById('pwaInstallBtn');
+    const openCreateModalBtn = document.getElementById('openCreateModalBtn');
+    const openBackupModalBtn = document.getElementById('openBackupModalBtn');
+    const carModal = document.getElementById('carModal');
+    const closeCarModalBtn = document.getElementById('closeCarModalBtn');
+    const cancelCarModalBtn = document.getElementById('cancelCarModalBtn');
+    const carForm = document.getElementById('carForm');
+    const carModalTitle = document.getElementById('carModalTitle');
+    const imagePreviewBox = document.getElementById('imagePreviewBox');
+    const formImageFile = document.getElementById('formImageFile');
+    const formImageUrl = document.getElementById('formImageUrl');
+
+    const backupModal = document.getElementById('backupModal');
+    const closeBackupModalBtn = document.getElementById('closeBackupModalBtn');
+    const dismissBackupModalBtn = document.getElementById('dismissBackupModalBtn');
+    const exportBackupBtn = document.getElementById('exportBackupBtn');
+    const importBackupFileInput = document.getElementById('importBackupFileInput');
+    const clearDatabaseBtn = document.getElementById('clearDatabaseBtn');
+
+    const confirmModal = document.getElementById('confirmModal');
+    const confirmModalTitle = document.getElementById('confirmModalTitle');
+    const confirmModalMessage = document.getElementById('confirmModalMessage');
+    const closeConfirmModalBtn = document.getElementById('closeConfirmModalBtn');
+    const cancelConfirmBtn = document.getElementById('cancelConfirmBtn');
+    const actionConfirmBtn = document.getElementById('actionConfirmBtn');
+
     // Toast elements
     const toastNotification = document.getElementById('toastNotification');
     const toastMessage = document.getElementById('toastMessage');
+
+    const showToast = (message, type = 'info') => {
+      toastMessage.textContent = message;
+      toastNotification.className = `toast-notification is-active toast-notification--${type}`;
+
+      const icons = {
+        success: '✅',
+        info: 'ℹ️',
+        error: '❌'
+      };
+      toastNotification.querySelector('.toast-icon').textContent = icons[type] || 'ℹ️';
+
+      setTimeout(() => {
+        toastNotification.classList.remove('is-active');
+      }, 4000);
+    };
 
     const formatPrice = (value) => Number(value || 0).toLocaleString('pt-BR', {
       style: 'currency',
       currency: 'BRL'
     });
+
+    const updateStats = () => {
+      const total = cars.length;
+      const sold = cars.filter(c => c.status === 'Vendido').length;
+      const available = cars.filter(c => c.status !== 'Vendido').length;
+
+      statTotal.textContent = total;
+      statAvailable.textContent = available;
+      statSold.textContent = sold;
+    };
 
     const renderPriceMarkup = (car) => {
       const price = Number(car.price) || 0;
@@ -172,7 +470,7 @@
       if (segment.includes('premium')) return 'gold-badge';
       if (segment.includes('silver series') || rarity.includes('treasure hunt') || rarity.includes('chase')) return 'silver-badge';
       if (assortment.includes('100%')) return 'red-badge';
-      if (assortment.includes('legends tour')) return 'dark_pink-badge'
+      if (assortment.includes('legends tour')) return 'dark_pink-badge';
       return 'default-badge';
     };
 
@@ -183,16 +481,17 @@
 
       return [
         `Hot Wheels: ${car.name}`,
+        `Status: ${car.status || 'Disponível'}`,
         `Preço: ${priceStr}`,
-        `Lançamento: ${car.release_year}`,
-        `Categoria: ${car.assortment}`,
-        `Série: ${car.series}`,
-        `Escala: ${car.scale}`,
-        `Cor da base: ${car.base_color}`,
-        `Cor da carroceria: ${car.body_color}`,
-        `Cor das janelas: ${car.window_color}`,
-        `Cor do interior: ${car.interior_color}`,
-        `Material da base: ${car.base_material}`,
+        `Lançamento: ${car.release_year || '-'}`,
+        `Categoria: ${car.assortment || '-'}`,
+        `Série: ${car.series || '-'}`,
+        `Escala: ${car.scale || '1:64'}`,
+        `Cor da base: ${car.base_color || '-'}`,
+        `Cor da carroceria: ${car.body_color || '-'}`,
+        `Cor das janelas: ${car.window_color || '-'}`,
+        `Cor do interior: ${car.interior_color || '-'}`,
+        `Material da base: ${car.base_material || '-'}`,
         `Observação: ${car.observation || '-'}`
       ].join('\n');
     };
@@ -206,93 +505,31 @@
 
       const rows = selectedCars.map((car) => [
         car.name,
-        car.price, // Export raw numeric price for calculation
-        car.release_year,
-        car.segment,
-        car.assortment,
-        car.series,
-        car.base_color,
-        car.body_color,
-        car.window_color,
-        car.interior_color,
-        car.base_material,
-        car.scale,
+        car.price,
+        car.release_year || '',
+        car.segment || '',
+        car.assortment || '',
+        car.series || '',
+        car.base_color || '',
+        car.body_color || '',
+        car.window_color || '',
+        car.interior_color || '',
+        car.base_material || '',
+        car.scale || '',
         car.observation || ''
       ]);
 
       const headers = [
-        'Modelo',
-        'Preço',
-        'Release Year',
-        'Segment',
-        'Assortment',
-        'Series',
-        'Base Color',
-        'Body Color',
-        'Window Color',
-        'Interior Color',
-        'Base Material',
-        'Scale',
-        'Observações'
+        'Modelo', 'Preço', 'Release Year', 'Segment', 'Assortment', 'Series',
+        'Base Color', 'Body Color', 'Window Color', 'Interior Color', 'Base Material', 'Scale', 'Observações'
       ];
 
       const worksheet = XLSX.utils.aoa_to_sheet([headers, ...rows]);
       worksheet['!autofilter'] = { ref: `A1:M${rows.length + 1}` };
       worksheet['!cols'] = [
-        { wch: 24 }, { wch: 14 }, { wch: 14 }, { wch: 16 }, { wch: 16 }, { wch: 18 }, { wch: 16 }, { wch: 16 }, { wch: 16 }, { wch: 18 }, { wch: 18 }, { wch: 10 }, { wch: 28 }
+        { wch: 24 }, { wch: 14 }, { wch: 14 }, { wch: 16 }, { wch: 16 }, { wch: 18 },
+        { wch: 16 }, { wch: 16 }, { wch: 16 }, { wch: 18 }, { wch: 18 }, { wch: 10 }, { wch: 28 }
       ];
-
-      const headerStyle = {
-        font: { bold: true, color: { rgb: 'FFFFFF' }, sz: 12 },
-        fill: { fgColor: { rgb: 'FF2C3E50' } },
-        alignment: { horizontal: 'center', vertical: 'center', wrapText: true },
-        border: {
-          top: { style: 'thin', color: { rgb: 'FF2C3E50' } },
-          bottom: { style: 'thin', color: { rgb: 'FF2C3E50' } },
-          left: { style: 'thin', color: { rgb: 'FF2C3E50' } },
-          right: { style: 'thin', color: { rgb: 'FF2C3E50' } }
-        }
-      };
-
-      const dataStyle = {
-        font: { sz: 11 },
-        alignment: { vertical: 'center', wrapText: true },
-        border: {
-          top: { style: 'thin', color: { rgb: 'FFD0D7DE' } },
-          bottom: { style: 'thin', color: { rgb: 'FFD0D7DE' } },
-          left: { style: 'thin', color: { rgb: 'FFD0D7DE' } },
-          right: { style: 'thin', color: { rgb: 'FFD0D7DE' } }
-        }
-      };
-
-      const summaryStyle = {
-        font: { bold: true, color: { rgb: 'FFFFFF' }, sz: 12 },
-        fill: { fgColor: { rgb: 'FFE8A23B' } },
-        alignment: { horizontal: 'center', vertical: 'center' },
-        border: {
-          top: { style: 'thin', color: { rgb: 'FFE8A23B' } },
-          bottom: { style: 'thin', color: { rgb: 'FFE8A23B' } },
-          left: { style: 'thin', color: { rgb: 'FFE8A23B' } },
-          right: { style: 'thin', color: { rgb: 'FFE8A23B' } }
-        }
-      };
-
-      headers.forEach((_, index) => {
-        const cellRef = XLSX.utils.encode_cell({ r: 0, c: index });
-        worksheet[cellRef].s = headerStyle;
-      });
-
-      rows.forEach((_, rowIndex) => {
-        headers.forEach((_, colIndex) => {
-          const cellRef = XLSX.utils.encode_cell({ r: rowIndex + 1, c: colIndex });
-          if (worksheet[cellRef]) {
-            worksheet[cellRef].s = dataStyle;
-            if (colIndex === 1) { // Format price cells as currency in Excel
-              worksheet[cellRef].z = 'R$ #,##0.00';
-            }
-          }
-        });
-      });
 
       const totalQty = selectedCars.length;
       const totalPrice = selectedCars.reduce((sum, car) => sum + (Number(car.price) || 0), 0);
@@ -300,8 +537,8 @@
       const priceTotalCell = XLSX.utils.encode_cell({ r: rows.length + 2, c: 1 });
       const qtyCell = XLSX.utils.encode_cell({ r: rows.length + 2, c: 11 });
       const noteCell = XLSX.utils.encode_cell({ r: rows.length + 2, c: 12 });
+      
       worksheet[totalCell] = { t: 's', v: 'Quantidade total de miniaturas' };
-      // Assign formula and calculated value for spreadsheet total price
       worksheet[priceTotalCell] = {
         t: 'n',
         f: `SUM(B2:B${rows.length + 1})`,
@@ -309,11 +546,7 @@
         z: 'R$ #,##0.00'
       };
       worksheet[qtyCell] = { t: 'n', v: totalQty };
-      worksheet[noteCell] = { t: 's', v: 'Seleção premium' };
-      worksheet[totalCell].s = summaryStyle;
-      worksheet[priceTotalCell].s = summaryStyle;
-      worksheet[qtyCell].s = summaryStyle;
-      worksheet[noteCell].s = summaryStyle;
+      worksheet[noteCell] = { t: 's', v: 'Seleção offline' };
 
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, 'Hot Wheels');
@@ -374,7 +607,6 @@
 
       if (totalPages <= 1) return;
 
-      // Botão Anterior
       const prevBtn = document.createElement('button');
       prevBtn.className = 'pagination-btn';
       prevBtn.textContent = '« Anterior';
@@ -389,7 +621,6 @@
       });
       pagination.appendChild(prevBtn);
 
-      // Função auxiliar para adicionar botão de página
       const addPageButton = (p) => {
         const btn = document.createElement('button');
         btn.className = 'pagination-btn';
@@ -413,9 +644,8 @@
         pagination.appendChild(span);
       };
 
-      // Janela inteligente de paginação
       const pagesToShow = [];
-      const range = 1; // páginas ao redor da atual
+      const range = 1;
 
       for (let i = 1; i <= totalPages; i++) {
         if (i === 1 || i === totalPages || (i >= currentPage - range && i <= currentPage + range)) {
@@ -436,7 +666,6 @@
         lastPage = p;
       });
 
-      // Botão Próximo
       const nextBtn = document.createElement('button');
       nextBtn.className = 'pagination-btn';
       nextBtn.textContent = 'Próximo »';
@@ -450,66 +679,39 @@
         }
       });
       pagination.appendChild(nextBtn);
-
-      // Ir para a página desejada
-      const jumpContainer = document.createElement('div');
-      jumpContainer.className = 'pagination-jump';
-
-      const jumpTextStart = document.createElement('span');
-      jumpTextStart.textContent = 'Ir para:';
-      jumpContainer.appendChild(jumpTextStart);
-
-      const jumpInput = document.createElement('input');
-      jumpInput.type = 'number';
-      jumpInput.className = 'pagination-input';
-      jumpInput.min = 1;
-      jumpInput.max = totalPages;
-      jumpInput.value = currentPage;
-
-      const goToPage = () => {
-        let pageVal = parseInt(jumpInput.value, 10);
-        if (isNaN(pageVal)) return;
-        if (pageVal < 1) pageVal = 1;
-        if (pageVal > totalPages) pageVal = totalPages;
-
-        currentPage = pageVal;
-        renderPage(currentPage);
-        updateCardSelectionState();
-        window.scrollTo({ top: catalog.offsetTop - 100, behavior: 'smooth' });
-      };
-
-      jumpInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          goToPage();
-        }
-      });
-      jumpContainer.appendChild(jumpInput);
-
-      const jumpTextEnd = document.createElement('span');
-      jumpTextEnd.textContent = `de ${totalPages}`;
-      jumpContainer.appendChild(jumpTextEnd);
-
-      const jumpBtn = document.createElement('button');
-      jumpBtn.className = 'pagination-btn pagination-go-btn';
-      jumpBtn.textContent = 'Ir';
-      jumpBtn.addEventListener('click', goToPage);
-      jumpContainer.appendChild(jumpBtn);
-
-      pagination.appendChild(jumpContainer);
     };
 
     const renderPage = (pageNumber) => {
       currentPage = pageNumber;
       catalog.innerHTML = '';
 
+      if (!filteredCars.length) {
+        const isEmptyTotal = cars.length === 0;
+        const msg = isEmptyTotal 
+          ? 'O catálogo está vazio no momento. Comece cadastrando sua primeira miniatura de Hot Wheels!'
+          : 'Nenhuma miniatura encontrada com os termos pesquisados.';
+        const btnText = isEmptyTotal ? '➕ Cadastrar Primeira Miniatura' : '➕ Cadastrar Miniatura';
+
+        catalog.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 50px 24px; background: rgba(255, 255, 255, 0.05); border-radius: 24px; border: 1px dashed var(--border);">
+            <div style="font-size: 3rem; margin-bottom: 12px;">🏎️</div>
+            <h3 style="margin: 0 0 8px; font-size: 1.3rem;">Catálogo Vazio</h3>
+            <p class="empty-selection" style="font-size: 1rem; max-width: 480px; margin: 0 auto 20px; color: var(--muted);">${msg}</p>
+            <button onclick="openCreateModal()" class="cta-create-btn">${btnText}</button>
+          </div>
+        `;
+        renderPagination(0);
+        return;
+      }
+
       const startIndex = (currentPage - 1) * itemsPerPage;
       const endIndex = Math.min(startIndex + itemsPerPage, filteredCars.length);
       const pageCars = filteredCars.slice(startIndex, endIndex);
+
       pageCars.forEach((car) => {
         const card = document.createElement('article');
         card.className = 'car-card';
 
-        // Apply status class
         const status = car.status || 'Disponível';
         if (status === 'Vendido') {
           card.classList.add('is-sold');
@@ -522,7 +724,6 @@
           card.classList.add(borderClass);
         }
 
-        // Status Badge
         let statusBadgeMarkup = '';
         if (status === 'Vendido') {
           statusBadgeMarkup = `<span class="status-badge status-badge--sold">Vendido</span>`;
@@ -534,7 +735,6 @@
         const badgeClass = badgeLabel ? getSpecialBadgeClass(car) : '';
         const badgeMarkup = badgeLabel ? `<span class="special-badge ${badgeClass}">${badgeLabel}</span>` : '';
 
-        // Select button configuration
         let selectBtnText = 'Selecionar';
         let selectBtnDisabled = '';
         if (status === 'Vendido') {
@@ -542,28 +742,30 @@
           selectBtnDisabled = 'disabled';
         }
 
+        const imageUrl = car.image || 'icons/icon.svg';
+
         card.innerHTML = `
           ${statusBadgeMarkup}
-          <div class="car-card__image" style="background-image: url('${car.image}');" role="img" aria-label="${car.name}"></div>
+          <div class="car-card__image" style="background-image: url('${imageUrl}');" role="img" aria-label="${car.name}"></div>
           <div class="card-body">
             <div class="card-top">
               <div>
-                <p class="card-category">${car.segment}</p>
+                <p class="card-category">${car.segment || 'Hot Wheels'}</p>
                 <h3>${car.name}</h3>
               </div>
               ${renderPriceMarkup(car)}
             </div>
             ${badgeMarkup}
             <div class="spec-grid">
-              <div><span>Lançamento</span><strong>${car.release_year}</strong></div>
-              <div><span>Categoria</span><strong>${car.assortment}</strong></div>
-              <div><span>Série</span><strong>${car.series}</strong></div>
-              <div><span>Escala</span><strong>${car.scale}</strong></div>
-              <div><span>Cor da base</span><strong>${car.base_color}</strong></div>
-              <div><span>Cor da carroceria</span><strong>${car.body_color}</strong></div>
-              <div><span>Cor das janelas</span><strong>${car.window_color}</strong></div>
-              <div><span>Cor do interior</span><strong>${car.interior_color}</strong></div>
-              <div><span>Material da base</span><strong>${car.base_material}</strong></div>
+              <div><span>Lançamento</span><strong>${car.release_year || '-'}</strong></div>
+              <div><span>Categoria</span><strong>${car.assortment || '-'}</strong></div>
+              <div><span>Série</span><strong>${car.series || '-'}</strong></div>
+              <div><span>Escala</span><strong>${car.scale || '1:64'}</strong></div>
+              <div><span>Cor da base</span><strong>${car.base_color || '-'}</strong></div>
+              <div><span>Cor da carroceria</span><strong>${car.body_color || '-'}</strong></div>
+              <div><span>Cor das janelas</span><strong>${car.window_color || '-'}</strong></div>
+              <div><span>Cor do interior</span><strong>${car.interior_color || '-'}</strong></div>
+              <div><span>Material da base</span><strong>${car.base_material || '-'}</strong></div>
               <div><span>Observação</span><strong>${car.observation || '-'}</strong></div>
             </div>
             <div class="card-actions">
@@ -571,6 +773,17 @@
               <button class="download-card-btn" data-id="${car.id}" title="Salvar card como imagem">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                 Salvar Card
+              </button>
+            </div>
+            <div class="card-admin-actions">
+              <button class="admin-action-btn admin-action-btn--edit" data-id="${car.id}" title="Editar informações">
+                ✏️ Editar
+              </button>
+              <button class="admin-action-btn admin-action-btn--status" data-id="${car.id}" title="Alternar status">
+                🔄 ${status}
+              </button>
+              <button class="admin-action-btn admin-action-btn--delete" data-id="${car.id}" title="Excluir miniatura">
+                🗑️ Excluir
               </button>
             </div>
           </div>
@@ -586,7 +799,9 @@
       searchFilter = searchTerm.toLowerCase().trim();
       if (searchFilter) {
         filteredCars = cars.filter((car) =>
-          car.name.toLowerCase().includes(searchFilter)
+          car.name.toLowerCase().includes(searchFilter) ||
+          (car.series && car.series.toLowerCase().includes(searchFilter)) ||
+          (car.segment && car.segment.toLowerCase().includes(searchFilter))
         );
         clearFilterBtn.style.display = 'inline-block';
       } else {
@@ -617,12 +832,12 @@
       searchInput.focus();
     });
 
-
     const downloadCardAsImage = async (cardElement, carName) => {
       const actionsContainer = cardElement.querySelector('.card-actions');
-      if (actionsContainer) {
-        actionsContainer.style.display = 'none';
-      }
+      const adminActionsContainer = cardElement.querySelector('.card-admin-actions');
+      
+      if (actionsContainer) actionsContainer.style.display = 'none';
+      if (adminActionsContainer) adminActionsContainer.style.display = 'none';
 
       const originalTransform = cardElement.style.transform;
       const originalTransition = cardElement.style.transition;
@@ -634,23 +849,17 @@
         const canvas = await html2canvas(cardElement, {
           useCORS: true,
           scale: 2,
-          backgroundColor: '#0b1124' // solid dark theme background for text contrast
+          backgroundColor: '#0b1124'
         });
 
-        if (actionsContainer) {
-          actionsContainer.style.display = 'flex';
-        }
+        if (actionsContainer) actionsContainer.style.display = 'flex';
+        if (adminActionsContainer) adminActionsContainer.style.display = 'flex';
         cardElement.style.transform = originalTransform;
         cardElement.style.transition = originalTransition;
 
         const url = canvas.toDataURL('image/png');
         const a = document.createElement('a');
-
-        const cleanName = String(carName)
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, '-')
-          .replace(/(^-|-$)/g, '');
-
+        const cleanName = String(carName).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
         a.href = url;
         a.download = `hotwheels-${cleanName}.png`;
         document.body.appendChild(a);
@@ -658,11 +867,9 @@
         document.body.removeChild(a);
       } catch (error) {
         console.error('Erro ao gerar imagem do card:', error);
-        alert('Não foi possível salvar o card como imagem.');
-
-        if (actionsContainer) {
-          actionsContainer.style.display = 'flex';
-        }
+        showToast('Não foi possível salvar o card como imagem.', 'error');
+        if (actionsContainer) actionsContainer.style.display = 'flex';
+        if (adminActionsContainer) adminActionsContainer.style.display = 'flex';
         cardElement.style.transform = originalTransform;
         cardElement.style.transition = originalTransition;
       }
@@ -673,50 +880,44 @@
       card.className = 'car-card';
 
       const status = car.status || 'Disponível';
-      if (status === 'Vendido') {
-        card.classList.add('is-sold');
-      } else if (status === 'Reservado') {
-        card.classList.add('is-reserved');
-      }
+      if (status === 'Vendido') card.classList.add('is-sold');
+      else if (status === 'Reservado') card.classList.add('is-reserved');
 
       const borderClass = getSpecialBorderClass(car);
-      if (borderClass) {
-        card.classList.add(borderClass);
-      }
+      if (borderClass) card.classList.add(borderClass);
 
       let statusBadgeMarkup = '';
-      if (status === 'Vendido') {
-        statusBadgeMarkup = `<span class="status-badge status-badge--sold">Vendido</span>`;
-      } else if (status === 'Reservado') {
-        statusBadgeMarkup = `<span class="status-badge status-badge--reserved">Reservado</span>`;
-      }
+      if (status === 'Vendido') statusBadgeMarkup = `<span class="status-badge status-badge--sold">Vendido</span>`;
+      else if (status === 'Reservado') statusBadgeMarkup = `<span class="status-badge status-badge--reserved">Reservado</span>`;
 
       const badgeLabel = getSpecialBadgeLabel(car);
       const badgeClass = badgeLabel ? getSpecialBadgeClass(car) : '';
       const badgeMarkup = badgeLabel ? `<span class="special-badge ${badgeClass}">${badgeLabel}</span>` : '';
 
+      const imageUrl = car.image || 'icons/icon.svg';
+
       card.innerHTML = `
         ${statusBadgeMarkup}
-        <div class="car-card__image" style="background-image: url('${car.image}');" role="img" aria-label="${car.name}"></div>
+        <div class="car-card__image" style="background-image: url('${imageUrl}');" role="img" aria-label="${car.name}"></div>
         <div class="card-body">
           <div class="card-top">
             <div>
-              <p class="card-category">${car.segment}</p>
+              <p class="card-category">${car.segment || 'Hot Wheels'}</p>
               <h3>${car.name}</h3>
             </div>
             ${renderPriceMarkup(car)}
           </div>
           ${badgeMarkup}
           <div class="spec-grid">
-            <div><span>Lançamento</span><strong>${car.release_year}</strong></div>
-            <div><span>Categoria</span><strong>${car.assortment}</strong></div>
-            <div><span>Série</span><strong>${car.series}</strong></div>
-            <div><span>Escala</span><strong>${car.scale}</strong></div>
-            <div><span>Cor da base</span><strong>${car.base_color}</strong></div>
-            <div><span>Cor da carroceria</span><strong>${car.body_color}</strong></div>
-            <div><span>Cor das janelas</span><strong>${car.window_color}</strong></div>
-            <div><span>Cor do interior</span><strong>${car.interior_color}</strong></div>
-            <div><span>Material da base</span><strong>${car.base_material}</strong></div>
+            <div><span>Lançamento</span><strong>${car.release_year || '-'}</strong></div>
+            <div><span>Categoria</span><strong>${car.assortment || '-'}</strong></div>
+            <div><span>Série</span><strong>${car.series || '-'}</strong></div>
+            <div><span>Escala</span><strong>${car.scale || '1:64'}</strong></div>
+            <div><span>Cor da base</span><strong>${car.base_color || '-'}</strong></div>
+            <div><span>Cor da carroceria</span><strong>${car.body_color || '-'}</strong></div>
+            <div><span>Cor das janelas</span><strong>${car.window_color || '-'}</strong></div>
+            <div><span>Cor do interior</span><strong>${car.interior_color || '-'}</strong></div>
+            <div><span>Material da base</span><strong>${car.base_material || '-'}</strong></div>
             <div><span>Observação</span><strong>${car.observation || '-'}</strong></div>
           </div>
         </div>
@@ -787,9 +988,8 @@
             }
 
             zip.file(`hotwheels-${cleanName}.png`, blob);
-
             tempContainer.removeChild(cardElement);
-            await new Promise((r) => setTimeout(r, 50));
+            await new Promise((r) => setTimeout(r, 40));
           }
 
           downloadImagesBtn.textContent = 'Criando ZIP...';
@@ -804,30 +1004,15 @@
           document.body.removeChild(a);
           URL.revokeObjectURL(url);
         }
+        showToast('Cards gerados com sucesso!', 'success');
       } catch (error) {
         console.error('Erro ao gerar imagens dos cards:', error);
-        alert('Ocorreu um erro ao baixar as imagens dos cards.');
+        showToast('Ocorreu um erro ao baixar as imagens dos cards.', 'error');
       } finally {
         document.body.removeChild(tempContainer);
         downloadImagesBtn.textContent = originalText;
         downloadImagesBtn.disabled = false;
       }
-    };
-
-    const showToast = (message, type = 'info') => {
-      toastMessage.textContent = message;
-      toastNotification.className = `toast-notification is-active toast-notification--${type}`;
-
-      const icons = {
-        success: '✅',
-        info: 'ℹ️',
-        error: '❌'
-      };
-      toastNotification.querySelector('.toast-icon').textContent = icons[type] || 'ℹ️';
-
-      setTimeout(() => {
-        toastNotification.classList.remove('is-active');
-      }, 4000);
     };
 
     const toggleSelection = (car) => {
@@ -862,6 +1047,318 @@
       });
     };
 
+    // ==========================================
+    // MODAL DE CADASTRO E EDIÇÃO (CRUD)
+    // ==========================================
+    const openCreateModal = () => {
+      carForm.reset();
+      document.getElementById('formCarId').value = '';
+      currentCompressedImage = '';
+      imagePreviewBox.style.backgroundImage = 'none';
+      imagePreviewBox.classList.remove('has-image');
+      document.getElementById('imagePreviewPlaceholder').style.display = 'block';
+
+      carModalTitle.textContent = 'Cadastrar Nova Miniatura';
+      document.getElementById('carModalSubtitle').textContent = 'Preencha as informações e adicione uma foto da miniatura.';
+      document.getElementById('saveCarBtn').textContent = 'Cadastrar Miniatura';
+
+      carModal.classList.add('is-active');
+      document.getElementById('formName').focus();
+    };
+
+    const openEditModal = (carId) => {
+      const car = cars.find(c => c.id === carId);
+      if (!car) return;
+
+      document.getElementById('formCarId').value = car.id;
+      document.getElementById('formName').value = car.name || '';
+      document.getElementById('formPrice').value = car.price || '';
+      document.getElementById('formOriginalPrice').value = car.original_price || '';
+      document.getElementById('formStatus').value = car.status || 'Disponível';
+      document.getElementById('formReleaseYear').value = car.release_year || '';
+      document.getElementById('formSegment').value = car.segment || '';
+      document.getElementById('formAssortment').value = car.assortment || '';
+      document.getElementById('formSeries').value = car.series || '';
+      document.getElementById('formRarity').value = car.rarity || '';
+      document.getElementById('formScale').value = car.scale || '1:64';
+      document.getElementById('formBaseMaterial').value = car.base_material || '';
+      document.getElementById('formBodyColor').value = car.body_color || '';
+      document.getElementById('formBaseColor').value = car.base_color || '';
+      document.getElementById('formWindowColor').value = car.window_color || '';
+      document.getElementById('formInteriorColor').value = car.interior_color || '';
+      document.getElementById('formObservation').value = car.observation || '';
+      document.getElementById('formImageUrl').value = car.image && !car.image.startsWith('data:') ? car.image : '';
+
+      currentCompressedImage = car.image || '';
+      if (currentCompressedImage) {
+        imagePreviewBox.style.backgroundImage = `url("${currentCompressedImage}")`;
+        imagePreviewBox.classList.add('has-image');
+        document.getElementById('imagePreviewPlaceholder').style.display = 'none';
+      } else {
+        imagePreviewBox.style.backgroundImage = 'none';
+        imagePreviewBox.classList.remove('has-image');
+        document.getElementById('imagePreviewPlaceholder').style.display = 'block';
+      }
+
+      carModalTitle.textContent = `Editar: ${car.name}`;
+      document.getElementById('carModalSubtitle').textContent = 'Altere as informações desejadas e salve as atualizações.';
+      document.getElementById('saveCarBtn').textContent = 'Salvar Alterações';
+
+      carModal.classList.add('is-active');
+    };
+
+    const closeCarModal = () => {
+      carModal.classList.remove('is-active');
+    };
+
+    // Imagem: Leitura e compressão inteligente
+    formImageFile.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        try {
+          showToast('Processando foto...', 'info');
+          const base64 = await window.ImageUtils.fileToBase64Optimized(file, 800, 0.85);
+          currentCompressedImage = base64;
+          imagePreviewBox.style.backgroundImage = `url("${base64}")`;
+          imagePreviewBox.classList.add('has-image');
+          document.getElementById('imagePreviewPlaceholder').style.display = 'none';
+          showToast('Foto carregada e otimizada!', 'success');
+        } catch (err) {
+          console.error(err);
+          showToast('Erro ao processar imagem selecionada.', 'error');
+        }
+      }
+    });
+
+    formImageUrl.addEventListener('input', (e) => {
+      const val = e.target.value.trim();
+      if (val) {
+        currentCompressedImage = val;
+        imagePreviewBox.style.backgroundImage = `url("${val}")`;
+        imagePreviewBox.classList.add('has-image');
+        document.getElementById('imagePreviewPlaceholder').style.display = 'none';
+      }
+    });
+
+    // Salvar Miniatura (Create / Update)
+    carForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const carId = document.getElementById('formCarId').value;
+      const name = document.getElementById('formName').value.trim();
+      const price = parseFloat(document.getElementById('formPrice').value);
+      const originalPriceVal = document.getElementById('formOriginalPrice').value.trim();
+      const original_price = originalPriceVal ? parseFloat(originalPriceVal) : null;
+      const status = document.getElementById('formStatus').value;
+
+      if (!name || isNaN(price)) {
+        showToast('Por favor, informe ao menos o Nome e o Preço.', 'error');
+        return;
+      }
+
+      const carData = {
+        name,
+        price,
+        original_price,
+        status,
+        image: currentCompressedImage || 'icons/icon.svg',
+        release_year: document.getElementById('formReleaseYear').value.trim(),
+        segment: document.getElementById('formSegment').value.trim(),
+        assortment: document.getElementById('formAssortment').value.trim(),
+        series: document.getElementById('formSeries').value.trim(),
+        rarity: document.getElementById('formRarity').value.trim(),
+        scale: document.getElementById('formScale').value.trim() || '1:64',
+        base_material: document.getElementById('formBaseMaterial').value.trim(),
+        body_color: document.getElementById('formBodyColor').value.trim(),
+        base_color: document.getElementById('formBaseColor').value.trim(),
+        window_color: document.getElementById('formWindowColor').value.trim(),
+        interior_color: document.getElementById('formInteriorColor').value.trim(),
+        observation: document.getElementById('formObservation').value.trim()
+      };
+
+      try {
+        if (carId) {
+          carData.id = carId;
+          await window.CatalogDB.update(carData);
+          showToast(`"${name}" atualizado com sucesso!`, 'success');
+        } else {
+          await window.CatalogDB.add(carData);
+          showToast(`"${name}" cadastrado com sucesso!`, 'success');
+        }
+
+        closeCarModal();
+        await reloadDataAndRender(carData.id);
+      } catch (err) {
+        console.error('Erro ao salvar miniatura no IndexedDB:', err);
+        showToast('Erro ao salvar miniatura.', 'error');
+      }
+    });
+
+    // ==========================================
+    // EXCLUSÃO E STATUS
+    // ==========================================
+    const openConfirmDialog = (title, message, callback) => {
+      confirmModalTitle.textContent = title;
+      confirmModalMessage.textContent = message;
+      confirmCallback = callback;
+      confirmModal.classList.add('is-active');
+    };
+
+    const closeConfirmDialog = () => {
+      confirmModal.classList.remove('is-active');
+      confirmCallback = null;
+    };
+
+    actionConfirmBtn.addEventListener('click', () => {
+      if (confirmCallback) {
+        confirmCallback();
+      }
+      closeConfirmDialog();
+    });
+
+    closeConfirmModalBtn.addEventListener('click', closeConfirmDialog);
+    cancelConfirmBtn.addEventListener('click', closeConfirmDialog);
+
+    const deleteCarById = (carId) => {
+      const car = cars.find(c => c.id === carId);
+      if (!car) return;
+
+      openConfirmDialog(
+        'Excluir Miniatura',
+        `Deseja realmente excluir permanentemente a miniatura "${car.name}" do catálogo?`,
+        async () => {
+          try {
+            await window.CatalogDB.delete(carId);
+            selectedCars = selectedCars.filter(c => c.id !== carId);
+            showToast(`Miniatura "${car.name}" removida.`, 'info');
+            await reloadDataAndRender();
+          } catch (err) {
+            console.error('Erro ao excluir:', err);
+            showToast('Erro ao excluir miniatura.', 'error');
+          }
+        }
+      );
+    };
+
+    const toggleCarStatus = async (carId) => {
+      const car = cars.find(c => c.id === carId);
+      if (!car) return;
+
+      const nextStatus = {
+        'Disponível': 'Reservado',
+        'Reservado': 'Vendido',
+        'Vendido': 'Disponível'
+      };
+
+      const updated = {
+        ...car,
+        status: nextStatus[car.status || 'Disponível'] || 'Disponível'
+      };
+
+      if (updated.status === 'Vendido') {
+        selectedCars = selectedCars.filter(c => c.id !== carId);
+      }
+
+      await window.CatalogDB.update(updated);
+      showToast(`Status de "${car.name}" alterado para ${updated.status}.`, 'info');
+      await reloadDataAndRender();
+    };
+
+    // ==========================================
+    // BACKUP E RESTAURAÇÃO
+    // ==========================================
+    openBackupModalBtn.addEventListener('click', () => {
+      backupModal.classList.add('is-active');
+    });
+
+    const closeBackupModal = () => {
+      backupModal.classList.remove('is-active');
+    };
+
+    closeBackupModalBtn.addEventListener('click', closeBackupModal);
+    dismissBackupModalBtn.addEventListener('click', closeBackupModal);
+
+    exportBackupBtn.addEventListener('click', async () => {
+      try {
+        const allCars = await window.CatalogDB.getAll();
+        const jsonStr = JSON.stringify(allCars, null, 2);
+        const blob = new Blob([jsonStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        const now = new Date().toISOString().split('T')[0];
+        a.href = url;
+        a.download = `hotwheels_catalogo_backup_${now}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('Backup exportado com sucesso!', 'success');
+      } catch (err) {
+        console.error(err);
+        showToast('Erro ao exportar backup.', 'error');
+      }
+    });
+
+    importBackupFileInput.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        try {
+          const imported = JSON.parse(event.target.result);
+          if (!Array.isArray(imported)) {
+            throw new Error('O arquivo de backup deve conter uma lista de miniaturas.');
+          }
+
+          openConfirmDialog(
+            'Importar Backup',
+            `O arquivo contém ${imported.length} miniaturas. Deseja substituir seu catálogo atual pelos dados deste backup?`,
+            async () => {
+              await window.CatalogDB.restoreFromData(imported);
+              showToast(`${imported.length} miniaturas restauradas com sucesso!`, 'success');
+              closeBackupModal();
+              await reloadDataAndRender();
+            }
+          );
+        } catch (err) {
+          console.error(err);
+          showToast('Arquivo de backup inválido.', 'error');
+        }
+      };
+      reader.readAsText(file);
+      importBackupFileInput.value = '';
+    });
+
+    if (clearDatabaseBtn) {
+      clearDatabaseBtn.addEventListener('click', () => {
+        openConfirmDialog(
+          'Zerar Catálogo',
+          'ATENÇÃO: Deseja realmente remover todas as miniaturas cadastradas e deixar o catálogo 100% limpo?',
+          async () => {
+            try {
+              await window.CatalogDB.clear();
+              selectedCars = [];
+              showToast('Catálogo zerado com sucesso!', 'info');
+              closeBackupModal();
+              await reloadDataAndRender();
+            } catch (err) {
+              console.error(err);
+              showToast('Erro ao zerar catálogo.', 'error');
+            }
+          }
+        );
+      });
+    }
+
+    // Modal listeners
+    openCreateModalBtn.addEventListener('click', openCreateModal);
+    closeCarModalBtn.addEventListener('click', closeCarModal);
+    cancelCarModalBtn.addEventListener('click', closeCarModal);
+
+    // ==========================================
+    // EVENTOS DE CATÁLOGO & CLIQUES
+    // ==========================================
     carSelect.addEventListener('change', (event) => {
       const car = cars.find((item) => item.id === event.target.value);
       if (car) {
@@ -883,22 +1380,44 @@
     });
 
     catalog.addEventListener('click', async (event) => {
+      // Seleção
       const selectBtn = event.target.closest('.select-btn');
       if (selectBtn) {
         const car = cars.find((item) => item.id === selectBtn.dataset.id);
-        if (car) {
-          toggleSelection(car);
+        if (car) toggleSelection(car);
+        return;
+      }
+
+      // Download de Card
+      const downloadCardBtn = event.target.closest('.download-card-btn');
+      if (downloadCardBtn) {
+        const card = downloadCardBtn.closest('.car-card');
+        if (card) {
+          const car = cars.find((item) => item.id === downloadCardBtn.dataset.id);
+          await downloadCardAsImage(card, car ? car.name : 'carrinho');
         }
         return;
       }
 
-      const downloadBtn = event.target.closest('.download-card-btn');
-      if (downloadBtn) {
-        const card = downloadBtn.closest('.car-card');
-        if (card) {
-          const car = cars.find((item) => item.id === downloadBtn.dataset.id);
-          await downloadCardAsImage(card, car ? car.name : 'carrinho');
-        }
+      // Edição
+      const editBtn = event.target.closest('.admin-action-btn--edit');
+      if (editBtn) {
+        openEditModal(editBtn.dataset.id);
+        return;
+      }
+
+      // Status
+      const statusBtn = event.target.closest('.admin-action-btn--status');
+      if (statusBtn) {
+        await toggleCarStatus(statusBtn.dataset.id);
+        return;
+      }
+
+      // Excluir
+      const deleteBtn = event.target.closest('.admin-action-btn--delete');
+      if (deleteBtn) {
+        deleteCarById(deleteBtn.dataset.id);
+        return;
       }
     });
 
@@ -948,60 +1467,70 @@
       downloadSelectedCardsAsImages();
     });
 
-    const generateHash = (str) => {
-      let hash = 0;
-      for (let i = 0; i < str.length; i++) {
-        const char = str.charCodeAt(i);
-        hash = ((hash << 5) - hash) + char;
-        hash = hash & hash; // Convert to 32-bit integer
-      }
-      return hash.toString(36);
+    // ==========================================
+    // RECARREGAMENTO E INICIALIZAÇÃO
+    // ==========================================
+    const reloadDataAndRender = async (focusCarId = null) => {
+      cars = await window.CatalogDB.getAll();
+      filteredCars = [...cars];
+      updateStats();
+      populateDropdown();
+      applyFilter(searchInput.value, focusCarId);
+      renderSelectedCars();
+      updateCardSelectionState();
     };
 
     const init = async () => {
       try {
-        catalog.innerHTML = '<p class="empty-selection">Carregando catálogo...</p>';
-        
-        // Always fetch the latest cars.json to check for updates
-        const response = await fetch('cars.json');
-        if (!response.ok) {
-          throw new Error('Falha ao carregar o arquivo JSON.');
-        }
-        const jsonText = await response.text();
-        const currentHash = generateHash(jsonText);
-        const storedHash = localStorage.getItem('hw_catalog_hash');
-        
-        const defaultCars = JSON.parse(jsonText);
-        const storedDb = localStorage.getItem('hw_catalog_database');
-        
-        // Use stored data only if hash matches (no updates to cars.json)
-        if (storedDb && storedHash === currentHash) {
-          cars = JSON.parse(storedDb);
-        } else {
-          // Load from file and update cache
-          cars = defaultCars.map((car) => ({
-            ...car,
-            status: car.status || 'Disponível'
-          }));
-          localStorage.setItem('hw_catalog_database', JSON.stringify(cars));
-          localStorage.setItem('hw_catalog_hash', currentHash);
-        }
-
-        cars.forEach((car, index) => {
-          car.id = `car-${index}`;
-        });
-        filteredCars = [...cars];
-
-        populateDropdown();
-        renderPage(1);
-        renderSelectedCars();
-        updateCardSelectionState();
+        catalog.innerHTML = '<p class="empty-selection">Carregando catálogo offline...</p>';
+        await window.CatalogDB.init();
+        await reloadDataAndRender();
       } catch (error) {
-        console.error('Erro ao inicializar o catálogo:', error);
-        catalog.innerHTML = '<p class="empty-selection" style="color: #ff4d4d;">Erro ao carregar os dados do catálogo. Por favor, tente novamente.</p>';
+        console.error('Erro ao inicializar catálogo offline:', error);
+        catalog.innerHTML = '<p class="empty-selection" style="color: #ff4d4d;">Erro ao carregar banco de dados local.</p>';
       }
     };
 
+    // ==========================================
+    // PWA & SERVICE WORKER
+    // ==========================================
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then((reg) => {
+            console.log('[PWA] Service Worker registrado com sucesso no escopo:', reg.scope);
+          })
+          .catch((err) => {
+            console.warn('[PWA] Falha ao registrar Service Worker:', err);
+          });
+      });
+    }
+
+    // Suporte à instalação como aplicativo Desktop / Mobile
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      pwaInstallBtn.style.display = 'inline-flex';
+    });
+
+    pwaInstallBtn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          showToast('Aplicativo instalado com sucesso!', 'success');
+          pwaInstallBtn.style.display = 'none';
+        }
+        deferredPrompt = null;
+      }
+    });
+
+    window.addEventListener('appinstalled', () => {
+      pwaInstallBtn.style.display = 'none';
+      showToast('Hot Wheels Catálogo instalado!', 'success');
+    });
+
+    // Inicialização da aplicação
     init();
   </script>
 </body>

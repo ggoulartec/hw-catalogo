@@ -751,3 +751,489 @@ button:disabled {
   border-color: var(--accent);
   color: #ffd1a6;
 }
+
+.toast-notification--error {
+  border-color: #e74c3c;
+  color: #ff6b6b;
+}
+
+/* ==========================================================================
+   Header Actions, Hero Stats & PWA Install
+   ========================================================================== */
+.hero-content {
+  flex: 1;
+}
+
+.hero-actions-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.hero-btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.cta-create-btn {
+  background: linear-gradient(135deg, #ff5722, #ff9800);
+  color: #ffffff;
+  font-weight: 700;
+  padding: 12px 20px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4);
+  transition: all 0.25s ease;
+}
+
+.cta-create-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 87, 34, 0.6);
+  background: linear-gradient(135deg, #ff6b3d, #ffa726);
+}
+
+.pwa-install-btn {
+  background: rgba(46, 204, 113, 0.16);
+  color: #2ecc71;
+  border: 1px solid rgba(46, 204, 113, 0.4);
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.25s ease;
+  animation: pwaPulse 2.5s infinite;
+}
+
+@keyframes pwaPulse {
+  0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(46, 204, 113, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+}
+
+.pwa-install-btn:hover {
+  background: rgba(46, 204, 113, 0.28);
+  transform: translateY(-2px);
+}
+
+.hero-stats-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.stat-pill {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border);
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.stat-pill strong {
+  color: var(--text);
+}
+
+/* ==========================================================================
+   Card Administrative Actions (Edit, Delete, Status)
+   ========================================================================== */
+.card-admin-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.admin-action-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.admin-action-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: var(--text);
+  transform: translateY(-1px);
+}
+
+.admin-action-btn--edit:hover {
+  border-color: #3498db;
+  color: #70b7ff;
+}
+
+.admin-action-btn--delete:hover {
+  border-color: #e74c3c;
+  color: #ff7675;
+  background: rgba(231, 76, 60, 0.15);
+}
+
+.admin-action-btn--status {
+  padding: 4px 8px;
+  font-size: 0.72rem;
+}
+
+/* Status Badges on Cards */
+.status-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  z-index: 2;
+  backdrop-filter: blur(8px);
+}
+
+.status-badge--sold {
+  background: rgba(231, 76, 60, 0.85);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.status-badge--reserved {
+  background: rgba(243, 156, 18, 0.85);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.car-card {
+  position: relative;
+}
+
+.car-card.is-reserved {
+  border-color: rgba(243, 156, 18, 0.6);
+}
+
+/* ==========================================================================
+   Modals (Glassmorphism & Interactive UI)
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(4, 8, 22, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal-overlay.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-card {
+  background: #0d152c;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 820px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+  transform: scale(0.94) translateY(20px);
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  overflow: hidden;
+}
+
+.modal-overlay.is-active .modal-card {
+  transform: scale(1) translateY(0);
+}
+
+.modal-card--small {
+  max-width: 480px;
+}
+
+.modal-header {
+  padding: 20px 28px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.35rem;
+  color: var(--text);
+}
+
+.modal-header p {
+  margin: 4px 0 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.modal-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+.modal-close-btn:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.modal-body {
+  padding: 24px 28px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.modal-footer {
+  padding: 16px 28px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Form Styles inside Modals */
+.form-section-title {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  margin: 0 0 10px;
+  font-weight: 700;
+}
+
+.form-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--accent);
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.2);
+}
+
+.form-group select option {
+  background: #0d152c;
+  color: #ffffff;
+}
+
+/* Image Upload Component */
+.image-upload-wrapper {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 18px;
+  align-items: center;
+}
+
+.image-preview-box {
+  width: 140px;
+  height: 140px;
+  border-radius: 16px;
+  border: 2px dashed var(--border);
+  background: rgba(255, 255, 255, 0.04);
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  color: var(--muted);
+  text-align: center;
+  font-size: 0.75rem;
+  padding: 8px;
+}
+
+.image-preview-box.has-image {
+  border-style: solid;
+  border-color: var(--accent);
+}
+
+.image-upload-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.file-input-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: fit-content;
+}
+
+.file-input-label:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.file-input-label input[type="file"] {
+  display: none;
+}
+
+/* Backup Cards in Backup Modal */
+.backup-card {
+  padding: 18px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.backup-card h4 {
+  margin: 0 0 4px;
+  font-size: 1rem;
+}
+
+.backup-card p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.danger-zone {
+  border-color: rgba(231, 76, 60, 0.4);
+  background: rgba(231, 76, 60, 0.06);
+}
+
+.danger-btn {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.danger-btn:hover {
+  background: #c0392b;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .hero-actions-container {
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .hero-btn-group,
+  .hero-stats-row {
+    justify-content: flex-start;
+  }
+
+  .form-grid-3,
+  .form-grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .image-upload-wrapper {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .backup-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
